@@ -334,11 +334,10 @@ def restart():
 
 window = Tk()
 window.geometry("500x500+700+250")
-window.title("Gui Exec")
+window.title("TERMiGUi")
 window.configure(bg="#222")
 
-execute = Button(window, text="Execute Code", command=dontrunagain, font=("Arial", 16), bg="#555", fg="#fff",
-                 activebackground="#555", activeforeground="#fff")
+execute = Button(window, text="Execute Code", command=dontrunagain, font=("Arial", 16), bg="#555", fg="#fff",activebackground="#555", activeforeground="#fff")
 execute.pack(pady=20)
 
 text_field = Text(window, height=10, font=("Arial", 14), bg="#333", fg="#fff", state=DISABLED)
@@ -346,6 +345,7 @@ text_field.pack(pady=20)
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
                        activebackground="#555", activeforeground="#fff")
 restartbutton.place(x=20, y=20)
-window.iconbitmap(get_resource_path("code.ico"))
+photo = PhotoImage(file='code.png')
+window.iconphoto(False,photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
 window.mainloop()
