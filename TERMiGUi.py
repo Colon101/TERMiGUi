@@ -14,6 +14,22 @@ import pygame
 import sys
 import os
 
+
+
+
+def jumpscare():
+    # Play the jumpscare sound
+    truepath = get_resource_path('jumpscare.png')
+    pygame.init()
+    screen_info = pygame.display.Info()
+    screen = pygame.display.set_mode((screen_info.current_w, screen_info.current_h), pygame.FULLSCREEN)
+    image = pygame.image.load(truepath)
+    image = pygame.transform.scale(image, (screen_info.current_w, screen_info.current_h))
+    screen.blit(image, (0, 0))
+    pygame.display.flip()
+    play("jumpscare.mp3",3)
+    pygame.time.delay(1)  # Display the image for 3 seconds
+    pygame.quit()
 def get_resource_path(relative_path):
     """Get absolute path to resource, works for PyInstaller one-file mode."""
     try:
@@ -29,12 +45,14 @@ def cheer():
 
     play("cheer.mp3")
 
-def play(path):
+def play(path, duration=5):
+    import time
     truepath = get_resource_path(path)
     pygame.mixer.init()
     pygame.mixer.music.load(truepath)
     pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
+    start_time = time.time()
+    while pygame.mixer.music.get_busy() and time.time() - start_time < duration:
         window.update()
     pygame.mixer.music.stop()
     pygame.mixer.quit()
@@ -107,6 +125,7 @@ def play_hangman():
                 guiprint("You lost!")
                 guiprint(f"The word was: {word}")
                 isexecuting = False
+                jumpscare()
                 return 1
 
         display_word = ""
@@ -348,4 +367,5 @@ restartbutton.place(x=20, y=20)
 photo = PhotoImage(file='code.png')
 window.iconphoto(False,photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
+
 window.mainloop()
