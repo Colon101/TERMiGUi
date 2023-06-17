@@ -95,7 +95,7 @@ def play_hangman():
             words.append(line.strip())
     word = random.choice(words)
     guessed_letters = []
-    attempts = 13
+    attempts = 6
     global isexecuting
     guiprint("Welcome to Hangman!")
     guiprint("_ " * len(word))
