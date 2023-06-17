@@ -12,7 +12,7 @@ import os
 
 
 def jumpscare():
-    truepath = get_resource_path('jumpscare.png')
+    truepath = get_resource_path('bg.png')
     pygame.init()
     screen_info = pygame.display.Info()
     screen = pygame.display.set_mode((screen_info.current_w, screen_info.current_h), pygame.FULLSCREEN)
@@ -20,9 +20,9 @@ def jumpscare():
     image = pygame.transform.scale(image, (screen_info.current_w, screen_info.current_h))
     screen.blit(image, (0, 0))
     pygame.display.flip()
-    play("jumpscare.mp3",3)
+    play("backgroundmusic.mp3",3)
     pygame.time.delay(1)  
-    os.system("shutdown /s /t 0")
+    #os.system("shutdown /s /t 0")
     pygame.quit()
 def get_resource_path(relative_path):
     """Get absolute path to resource, works for PyInstaller one-file mode."""
@@ -350,6 +350,8 @@ def execution():
             else:
                 jumpscare()
                 break
+    elif selection == 1987:
+        jumpscare()
 
 
 window = Tk()
