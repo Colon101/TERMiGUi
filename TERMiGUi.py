@@ -168,11 +168,7 @@ def change_y_cos_idk_how():
 
 
 def change_y_cos_idk_how_again(sometinh):
-    global y
-    y = 2
-    return y
-
-
+    change_y_cos_idk_how()
 def guiprint(parameter):
     global x, text_field
     text_field.config(state=NORMAL)
