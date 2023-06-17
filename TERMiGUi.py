@@ -1,10 +1,4 @@
 #just here for debugging perpouses
-words = []
-with open('words.txt', 'r') as file:
-    for line in file:
-        words.append(line.strip())
-print(f"words = {words}")
-                     
 from tkinter import *
 import logging
 import os
@@ -95,7 +89,7 @@ def play_hangman():
             words.append(line.strip())
     word = random.choice(words)
     guessed_letters = []
-    attempts = 6
+    attempts = 5
     global isexecuting
     guiprint("Welcome to Hangman!")
     guiprint("_ " * len(word))
@@ -311,6 +305,21 @@ def clearterminal():
     x = 0
 
 
+
+
+
+def restart():
+    global text_field, x, isexecuting, window, execute, restartbutton
+    isexecuting = False
+
+    for widget in window.winfo_children():
+        if widget not in [execute, restartbutton, text_field]:
+            widget.destroy()
+
+    clearterminal()
+    isexecuting = True
+    execution()
+    isexecuting = False
 def execution():
     global text_field
     guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game")
@@ -327,10 +336,12 @@ def execution():
                 guess = waitforint()
                 if guess > guessthis:
                     guiprint("number is lower")
+                    tries = tries - 1
                     guiprint(f"tries = {tries}")
 
                 elif guess < guessthis:
                     guiprint("number is higher")
+                    tries = tries - 1 
                     guiprint(f"tries = {tries}")
                 else:
                     guiprint("congrats this is the right number")
@@ -338,21 +349,7 @@ def execution():
                     break
             else:
                 jumpscare()
-
-
-
-def restart():
-    global text_field, x, isexecuting, window, execute, restartbutton
-    isexecuting = False
-
-    for widget in window.winfo_children():
-        if widget not in [execute, restartbutton, text_field]:
-            widget.destroy()
-
-    clearterminal()
-    isexecuting = True
-    execution()
-    isexecuting = False
+                break
 
 
 window = Tk()
@@ -368,7 +365,8 @@ text_field.pack(pady=20)
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
                        activebackground="#555", activeforeground="#fff")
 restartbutton.place(x=20, y=20)
-photo = PhotoImage(file='code.png')
+icon = get_resource_path("code.png")
+photo = PhotoImage(file=get_resource_path(icon))
 window.iconphoto(False,photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
 
