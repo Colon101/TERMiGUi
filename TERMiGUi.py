@@ -328,7 +328,9 @@ def execution():
         play_hangman()
     elif selection == 2:
         guiprint(f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
-        tries = 6
+        guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
+        selectdiff = waitforint()
+        tries = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
         guiprint(f"tries = {tries}")
         guessthis = random.randint(1,100)
         while True:
