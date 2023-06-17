@@ -1,4 +1,8 @@
 winget install Python.Python.3.11
+$existingPath = [Environment]::GetEnvironmentVariable("PATH", [EnvironmentVariableTarget]::User)
+$newPath = "$existingPath;$env:USERPROFILE\AppData\Local\Programs\Python\Python311\Scripts"
+[Environment]::SetEnvironmentVariable("PATH", $newPath, [EnvironmentVariableTarget]::User)
+
 pip install -r requirements.txt
 
 $sourceFile = "TERMiGUi.py"
