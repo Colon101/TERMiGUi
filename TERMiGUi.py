@@ -1,4 +1,3 @@
-#just here for debugging perpouses
 from tkinter import *
 import logging
 import os
