@@ -319,17 +319,25 @@ def execution():
         play_hangman()
     elif selection == 2:
         guiprint(f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
+        tries = 6
+        guiprint(f"tries = {tries}")
         guessthis = random.randint(1,100)
         while True:
-            guess = waitforint()
-            if guess > guessthis:
-                guiprint("number is lower")
-            elif guess < guessthis:
-                guiprint("number is higher")
+            if tries != 0:
+                guess = waitforint()
+                if guess > guessthis:
+                    guiprint("number is lower")
+                    guiprint(f"tries = {tries}")
+
+                elif guess < guessthis:
+                    guiprint("number is higher")
+                    guiprint(f"tries = {tries}")
+                else:
+                    guiprint("congrats this is the right number")
+                    cheer()
+                    break
             else:
-                guiprint("congrats this is the right number")
-                cheer()
-                break
+                jumpscare()
 
 
 
