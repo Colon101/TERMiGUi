@@ -23,6 +23,7 @@ def bgmusic():
     pygame.time.delay(1)  
     #os.system("shutdown /s /t 0")
     pygame.quit()
+    trytoexit()
 def get_resource_path(relative_path):
     """Get absolute path to resource, works for PyInstaller one-file mode."""
     try:
