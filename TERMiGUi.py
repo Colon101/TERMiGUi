@@ -6,11 +6,14 @@ import os
 import pygame
 import sys
 import os
-
+disablebackgroundmusic = True
 
 
 
 def bgmusic():
+    global disablebackgroundmusic
+    if disablebackgroundmusic == True:
+        return -1
     truepath = get_resource_path("bg.png")
     pygame.init()
     screen_info = pygame.display.Info()
