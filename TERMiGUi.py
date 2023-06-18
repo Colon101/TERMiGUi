@@ -89,6 +89,7 @@ def play_hangman():
             words.append(line.strip())
     word = random.choice(words)
     guessed_letters = []
+    guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
     selectdiff = waitforint()
     attempts = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
     if attempts != None: guiprint(f"tries = {attempts}")
@@ -158,14 +159,11 @@ x = 0
 y = 0
 
 
-def change_y_cos_idk_how():
+def change_y_cos_idk_how(self=5):
     global y
     y = 2
     return y
 
-
-def change_y_cos_idk_how_again(sometinh):
-    change_y_cos_idk_how()
 def guiprint(parameter):
     global x, text_field
     text_field.config(state=NORMAL)
@@ -224,7 +222,7 @@ def waitforstring():
     global y, window
     userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
     userinputentry.pack(pady=10)
-    userinputentry.bind('<Return>', change_y_cos_idk_how_again)
+    userinputentry.bind('<Return>', change_y_cos_idk_how)
     userinputentry.focus_set()
     userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
                              fg="#fff", activebackground="#555", activeforeground="#fff")
@@ -244,7 +242,7 @@ def waitfornormalstring():
     global y, window
     userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
     userinputentry.pack(pady=10)
-    userinputentry.bind('<Return>', change_y_cos_idk_how_again)
+    userinputentry.bind('<Return>', change_y_cos_idk_how)
     userinputentry.focus_set()
     userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
                              fg="#fff", activebackground="#555", activeforeground="#fff")
@@ -263,7 +261,7 @@ def waitforint():
     global y, window
     userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
     userinputentry.pack(pady=10)
-    userinputentry.bind('<Return>', change_y_cos_idk_how_again)
+    userinputentry.bind('<Return>', change_y_cos_idk_how)
     userinputentry.focus_set()
     userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
                              fg="#fff", activebackground="#555", activeforeground="#fff")
