@@ -1,7 +1,8 @@
 from tkinter import *
 import logging
 import os
-import random
+
+
 import pygame
 import sys
 import os
@@ -24,9 +25,12 @@ def bgmusic():
     pygame.quit()
     trytoexit()
 def get_resource_path(relative_path):
+    """Get absolute path to resource, works for PyInstaller one-file mode."""
     try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except AttributeError:
+        # In regular Python environment, the script's directory is used
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
@@ -75,219 +79,9 @@ def IsListJustFloats(lst):
     return True
 
 
-def log_error(exception):
-    logging.basicConfig(filename='errors.log', level=logging.ERROR, format='%(asctime)s:%(levelname)s:%(message)s')
-
-    console = logging.StreamHandler()
-    console.setLevel(logging.ERROR)
-    formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
-    console.setFormatter(formatter)
-    logging.getLogger('').addHandler(console)
-
-    logging.error(str(exception))
+import random
 
 
-isexecuting = False
-x = 0
-y = 0
-
-
-def change_y_cos_idk_how(self=5):
-    global y
-    y = 2
-    return y
-
-def guiprint(parameter):
-    global x, text_field
-    text_field.config(state=NORMAL)
-    if x == 0:
-        text_field.insert(END, f"{parameter}")
-        x = 1
-    else:
-        text_field.insert(END, f"\n{parameter}")
-    text_field.see(END)
-    text_field.config(state=DISABLED)
-
-
-def waitforlist(n):
-    if n > 5:
-        guiprint("We recommend a smaller number!\nWould you like to change the number?\n[Change/No]")
-        changeornot = waitfornormalstring()
-        if changeornot == "no":
-            guiprint("Alright, continuing the operation")
-        else:
-            guiprint("Alright, select a number again:")
-            return waitforlist(waitforint())
-
-    global window
-
-    data = []
-
-    def submit():
-        nonlocal data
-        data = []
-        for entry in entries:
-            try:
-                data.append(int(entry.get()))
-            except ValueError:
-                try:
-                    data.append(float(entry.get()))
-                except (ValueError, TypeError):
-                    data.append(entry.get())
-
-        entry_frame.destroy()
-        submit_button.destroy()
-        window.quit()
-
-    def handle_keypress(event):
-        if event.keysym == 'Return':
-            submit()
-
-    entry_frame = Frame(window)
-    entries = []
-    for i in range(n):
-        entry = Entry(entry_frame, width=10)
-        entry.grid(row=0, column=i)
-        entry.bind('<KeyPress>', handle_keypress)
-        entries.append(entry)
-    
-    entry_frame.pack(pady=10)
-    entries[0].focus_set()  # Focus on the first entry
-
-    submit_button = Button(window, text="Submit", command=submit)
-    submit_button.pack(pady=10)
-
-    window.mainloop()
-
-    return data
-
-
-
-
-def waitfornormalstring():
-    global window
-
-    def submit():
-        nonlocal entered_value
-        global isexecuting
-        entered_value = userinputentry.get()
-        userinputentry.destroy()
-        userinputbutton.destroy()
-
-    entered_value = None
-
-    userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
-    userinputentry.pack(pady=10)
-    userinputentry.focus_set()
-
-    userinputbutton = Button(window, text="Submit", command=submit, font=("Arial", 14), bg="#555",
-                             fg="#fff", activebackground="#555", activeforeground="#fff")
-    userinputbutton.pack(pady=10)
-
-    userinputentry.bind('<Return>', lambda event: submit())
-
-    window.mainloop()
-
-    return entered_value
-
-def waitforstring():
-    global window
-
-    def submit():
-        nonlocal entered_value
-        global isexecuting
-        entered_value = userinputentry.get()
-        userinputentry.destroy()
-        userinputbutton.destroy()
-
-    entered_value = None
-
-    userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
-    userinputentry.pack(pady=10)
-    userinputentry.focus_set()
-
-    userinputbutton = Button(window, text="Submit", command=submit, font=("Arial", 14), bg="#555",
-                             fg="#fff", activebackground="#555", activeforeground="#fff")
-    userinputbutton.pack(pady=10)
-
-    userinputentry.bind('<Return>', lambda event: submit())
-
-    window.mainloop()
-
-    return entered_value.lower()
-
-def waitforint():
-    global window
-
-    def submit():
-        nonlocal entered_value
-        global isexecuting
-        entered_value = userinputentry.get()
-        try:
-            entered_value = int(entered_value)
-            window.quit()
-        except ValueError:
-            guiprint("Invalid input. Please enter an integer.")
-            isexecuting == False
-
-        userinputentry.destroy()
-        userinputbutton.destroy()
-
-    entered_value = None
-
-    userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
-    userinputentry.pack(pady=10)
-    userinputentry.focus_set()
-
-    userinputbutton = Button(window, text="Submit", command=submit, font=("Arial", 14), bg="#555",
-                             fg="#fff", activebackground="#555", activeforeground="#fff")
-    userinputbutton.pack(pady=10)
-
-    userinputentry.bind('<Return>', lambda event: submit())
-
-    window.mainloop()
-
-    return entered_value
-
-
-def dontrunagain():
-    global isexecuting
-    if isexecuting == False:
-        global text_field, x
-        isexecuting = True
-        text_field.config(state=NORMAL)
-        text_field.delete('1.0', END)
-        x = 0
-        execution()
-        isexecuting = False
-    else:
-        log_error("user tried clicking on the execute button again")
-        guiprint("The code is already running")
-
-
-def clearterminal():
-    global text_field, x
-    text_field.config(state=NORMAL)
-    text_field.delete('1.0', END)
-    text_field.config(state=DISABLED)
-    x = 0
-
-
-
-
-
-def restart():
-    global text_field, x, isexecuting, window, execute, restartbutton
-    isexecuting = False
-
-    for widget in window.winfo_children():
-        if widget not in [execute, restartbutton, text_field]:
-            widget.destroy()
-
-    clearterminal()
-    isexecuting = True
-    execution()
-    isexecuting = False
 def play_hangman():
     words = []
     with open(get_resource_path('words.txt'), 'r') as file:
@@ -346,6 +140,187 @@ def play_hangman():
             cheer()
             isexecuting = False
             return 0
+
+
+def log_error(exception):
+    logging.basicConfig(filename='errors.log', level=logging.ERROR, format='%(asctime)s:%(levelname)s:%(message)s')
+
+    console = logging.StreamHandler()
+    console.setLevel(logging.ERROR)
+    formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+    console.setFormatter(formatter)
+    logging.getLogger('').addHandler(console)
+
+    logging.error(str(exception))
+
+
+isexecuting = False
+x = 0
+y = 0
+
+
+def change_y_cos_idk_how(self=5):
+    global y
+    y = 2
+    return y
+
+def guiprint(parameter):
+    global x, text_field
+    text_field.config(state=NORMAL)
+    if x == 0:
+        text_field.insert(END, f"{parameter}")
+        x = 1
+    else:
+        text_field.insert(END, f"\n{parameter}")
+    text_field.see(END)
+    text_field.config(state=DISABLED)
+
+
+def waitforlist(n):
+    if n > 5:
+        guiprint("we recommend a smaller number!\nWould you like to or change the number?\n[Change/No]")
+        changeornot = waitfornormalstring()
+        if changeornot == "no":
+            guiprint("alright continuing the operation")
+        else:
+            guiprint("alright select a number again:")
+            return waitforlist(waitforint())
+    global window
+    data = []
+
+    def submit():
+        nonlocal data
+        data = []
+        for entry in entries:
+            try:
+                data.append(int(entry.get()))
+            except ValueError:
+                try:
+                    data.append(float(entry.get()))
+                except (ValueError, TypeError):
+                    data.append(entry.get())
+
+        entry_frame.pack_forget()
+        submit_button.pack_forget()
+        window.quit()
+
+    entry_frame = Frame(window)
+    entries = []
+    for i in range(n):
+        entry = Entry(entry_frame, width=10)
+        entry.grid(row=0, column=i)
+        entries.append(entry)
+    entry_frame.pack(pady=10)
+
+    submit_button = Button(window, text="Submit", command=submit)
+    submit_button.pack(pady=10)
+    window.mainloop()
+    return data
+
+
+def waitforstring():
+    global y, window
+    userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
+    userinputentry.pack(pady=10)
+    userinputentry.bind('<Return>', change_y_cos_idk_how)
+    userinputentry.focus_set()
+    userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
+                             fg="#fff", activebackground="#555", activeforeground="#fff")
+    userinputbutton.pack(pady=10)
+
+    while y == 0:
+        window.update()
+    y = 0
+    thing = userinputentry.get()
+    userinputbutton.destroy()
+    userinputentry.destroy()
+    thing = thing.lower()
+    return thing
+
+
+def waitfornormalstring():
+    global y, window
+    userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
+    userinputentry.pack(pady=10)
+    userinputentry.bind('<Return>', change_y_cos_idk_how)
+    userinputentry.focus_set()
+    userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
+                             fg="#fff", activebackground="#555", activeforeground="#fff")
+    userinputbutton.pack(pady=10)
+
+    while y == 0:
+        window.update()
+    y = 0
+    thing = userinputentry.get()
+    userinputbutton.destroy()
+    userinputentry.destroy()
+    return thing
+
+
+def waitforint():
+    global y, window
+    userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
+    userinputentry.pack(pady=10)
+    userinputentry.bind('<Return>', change_y_cos_idk_how)
+    userinputentry.focus_set()
+    userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
+                             fg="#fff", activebackground="#555", activeforeground="#fff")
+    userinputbutton.pack(pady=10)
+
+    while y == 0:
+        window.update()
+    y = 0
+    thing = userinputentry.get()
+    userinputbutton.destroy()
+    userinputentry.destroy()
+
+    try:
+        thing = int(thing)
+    except ValueError as e:
+        guiprint("Invalid input. Please enter an integer.")
+        log_error(e)
+        return waitforint()
+    return thing
+
+
+def dontrunagain():
+    global isexecuting
+    if isexecuting == False:
+        global text_field, x
+        isexecuting = True
+        text_field.config(state=NORMAL)
+        text_field.delete('1.0', END)
+        x = 0
+        execution()
+        isexecuting = False
+    else:
+        log_error("user tried clicking on the execute button again")
+        guiprint("The code is already running")
+
+
+def clearterminal():
+    global text_field, x
+    text_field.config(state=NORMAL)
+    text_field.delete('1.0', END)
+    text_field.config(state=DISABLED)
+    x = 0
+
+
+
+
+
+def restart():
+    global text_field, x, isexecuting, window, execute, restartbutton
+    isexecuting = False
+
+    for widget in window.winfo_children():
+        if widget not in [execute, restartbutton, text_field]:
+            widget.destroy()
+
+    clearterminal()
+    isexecuting = True
+    execution()
+    isexecuting = False
 def execution():
     global text_field
     guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game")
@@ -381,6 +356,8 @@ def execution():
                 break
     elif selection == 1987:
         bgmusic()
+
+
 window = Tk()
 window.geometry("500x500+700+250")
 window.title("TERMiGUi")
