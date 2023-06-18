@@ -17,3 +17,5 @@ guiprint() - allows you to just print something into a text field
 waitforstring() - returns a user input of a lowered string
 
 waitforwhatevertypeofvar() - should return a user input of whatever type of var
+
+bgmusic() - interesting maybe try to call it?
