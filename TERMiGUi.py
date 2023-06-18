@@ -10,7 +10,7 @@ import os
 
 
 
-def jumpscare():
+def bgmusic():
     truepath = get_resource_path('bg.png')
     pygame.init()
     screen_info = pygame.display.Info()
@@ -118,7 +118,7 @@ def play_hangman():
                 guiprint("You lost!")
                 guiprint(f"The word was: {word}")
                 isexecuting = False
-                jumpscare()
+                bgmusic()
                 return 1
 
         display_word = ""
@@ -349,10 +349,10 @@ def execution():
                     cheer()
                     break
             else:
-                jumpscare()
+                bgmusic()
                 break
     elif selection == 1987:
-        jumpscare()
+        bgmusic()
 
 
 window = Tk()
