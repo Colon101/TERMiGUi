@@ -11,7 +11,7 @@ import os
 
 
 def bgmusic():
-    truepath = get_resource_path('bg.png')
+    truepath = get_resource_path("bg.png")
     pygame.init()
     screen_info = pygame.display.Info()
     screen = pygame.display.set_mode((screen_info.current_w, screen_info.current_h), pygame.FULLSCREEN)
@@ -88,7 +88,10 @@ def play_hangman():
             words.append(line.strip())
     word = random.choice(words)
     guessed_letters = []
-    attempts = 5
+    selectdiff = waitforint()
+    attempts = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
+    if attempts != None: guiprint(f"tries = {attempts}")
+    else: return -1
     global isexecuting
     guiprint("Welcome to Hangman!")
     guiprint("_ " * len(word))
@@ -330,7 +333,8 @@ def execution():
         guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
         selectdiff = waitforint()
         tries = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
-        guiprint(f"tries = {tries}")
+        if tries != None: guiprint(f"tries = {tries}")
+        else: return -1
         guessthis = random.randint(1,100)
         while True:
             if tries != 0:
