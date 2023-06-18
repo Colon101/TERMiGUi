@@ -1,7 +1,8 @@
 from tkinter import *
 import logging
 import os
-import random
+
+
 import pygame
 import sys
 import os
@@ -288,99 +289,13 @@ def restart():
     isexecuting = True
     execution()
     isexecuting = False
-def play_hangman():
-    words = []
-    with open(get_resource_path('words.txt'), 'r') as file:
-        for line in file:
-            words.append(line.strip())
-    word = random.choice(words)
-    guessed_letters = []
-    guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
-    selectdiff = waitforint()
-    attempts = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
-    if attempts != None: guiprint(f"tries = {attempts}")
-    else: return -1
-    global isexecuting
-    guiprint("Welcome to Hangman!")
-    guiprint("_ " * len(word))
-
-    while True:
-        window.update()
-        guiprint("what's your guess: ")
-        letter = waitforstring()
-
-        if len(letter) != 1 or not letter.isalpha():
-            guiprint("Invalid input. Please enter a single letter.")
-            continue
-
-        if letter in guessed_letters:
-            guiprint("You've already guessed that letter. Try again.")
-            continue
-
-        guessed_letters.append(letter)
-
-        if letter in word:
-            guiprint("Correct guess!")
-        else:
-            attempts -= 1
-            guiprint("Wrong guess!")
-            guiprint(f"guesses remaining: {attempts}")
-            if attempts == 0:
-                guiprint("You lost!")
-                guiprint(f"The word was: {word}")
-                isexecuting = False
-                bgmusic()
-                return 1
-
-        display_word = ""
-        for char in word:
-            if char in guessed_letters:
-                display_word += char + " "
-            else:
-                display_word += "_ "
-
-        guiprint(display_word)
-
-        if "_" not in display_word:
-            guiprint("Congratulations! You won!")
-            cheer()
-            isexecuting = False
-            return 0
 def execution():
     global text_field
-    guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game")
-    selection = waitforint()
-    if selection == 1:
-        play_hangman()
-    elif selection == 2:
-        guiprint(f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
-        guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
-        selectdiff = waitforint()
-        tries = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
-        if tries != None: guiprint(f"tries = {tries}")
-        else: return -1
-        guessthis = random.randint(1,100)
-        while True:
-            if tries != 0:
-                guess = waitforint()
-                if guess > guessthis:
-                    guiprint("number is lower")
-                    tries = tries - 1
-                    guiprint(f"tries = {tries}")
+    data = waitforint()
+    guiprint(data)
+    listdata = waitforlist(5)
+    guiprint(f'{listdata}')
 
-                elif guess < guessthis:
-                    guiprint("number is higher")
-                    tries = tries - 1 
-                    guiprint(f"tries = {tries}")
-                else:
-                    guiprint("congrats this is the right number")
-                    cheer()
-                    break
-            else:
-                bgmusic()
-                break
-    elif selection == 1987:
-        bgmusic()
 window = Tk()
 window.geometry("500x500+700+250")
 window.title("TERMiGUi")
