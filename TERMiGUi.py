@@ -6,8 +6,63 @@ import time
 import pygame
 import sys
 import os
+import random
 disablebackgroundmusic = True
-
+def loading_screen(duration):
+    messages = ["Fetching data", "Processing variables", "Final calculations", "Booting database",
+                "Optimizing algorithms", "Analyzing user preferences", "Loading assets",
+                "Generating infrastructure", "Initializing subsystems","Hyper Compiling","Remaking Init System"]
+    progress = 0
+    next_message_time = 0
+    
+    pygame.init()
+    icon_image = pygame.image.load(get_resource_path("code.png"))
+    pygame.display.set_icon(icon_image)
+    screen_width, screen_height = 400, 150
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption("Loading Screen")
+    clock = pygame.time.Clock()
+    
+    font = pygame.font.Font(None, 36)
+    loading_text = font.render("Loading... Fetching data", True, (0, 0, 0))
+    loading_rect = loading_text.get_rect(center=(screen_width // 2, screen_height // 2 - 40))
+    
+    progress_bar_width = 300
+    progress_bar_height = 20
+    progress_bar_x = (screen_width - progress_bar_width) // 2
+    progress_bar_y = screen_height // 2
+    
+    while progress < duration:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                trytoexit()
+                pygame.quit()
+                return
+        
+        # Update progress and loading message
+        progress += 1 / 60  # Increment progress by 1/60 per frame
+        
+        if pygame.time.get_ticks() > next_message_time:
+            loading_text = font.render(random.choice(messages), True, (0, 0, 0))
+            next_message_time = pygame.time.get_ticks() + random.randint(100, 600)
+        
+        # Clear the screen
+        screen.fill((255, 255, 255))
+        
+        # Draw loading text
+        screen.blit(loading_text, loading_rect)
+        
+        # Draw progress bar background
+        pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y - 2, progress_bar_width + 4, progress_bar_height + 4), 2)
+        
+        # Draw progress bar fill
+        progress_bar_fill_width = int(progress / duration * progress_bar_width)
+        pygame.draw.rect(screen, (190, 190, 190), (progress_bar_x, progress_bar_y, progress_bar_fill_width, progress_bar_height))
+        
+        pygame.display.flip()
+        clock.tick(30)  # Limit frame rate to 30 FPS
+    
+    pygame.quit()
 
 
 def bgmusic():
@@ -81,8 +136,6 @@ def IsListJustFloats(lst):
                 return False
     return True
 
-
-import random
 
 
 def play_hangman():
@@ -363,7 +416,6 @@ def execution():
     elif selection == 1987:
         bgmusic()
 
-
 window = Tk()
 window.geometry("500x500+700+250")
 window.title("TERMiGUi")
@@ -381,5 +433,6 @@ icon = get_resource_path("code.png")
 photo = PhotoImage(file=get_resource_path(icon))
 window.iconphoto(False,photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
+loading_screen(4.2069)
 
 window.mainloop()
