@@ -6,7 +6,7 @@ import os
 import pygame
 import sys
 import os
-disablebackgroundmusic = False
+disablebackgroundmusic = True
 
 
 
