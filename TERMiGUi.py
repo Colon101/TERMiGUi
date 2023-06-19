@@ -20,7 +20,7 @@ def loading_screen(duration):
     pygame.display.set_icon(icon_image)
     screen_width, screen_height = 400, 150
     screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Loading Screen")
+    pygame.display.set_caption("Loading...")
     clock = pygame.time.Clock()
     
     font = pygame.font.Font(None, 36)
@@ -43,8 +43,11 @@ def loading_screen(duration):
         progress += 1 / 60  # Increment progress by 1/60 per frame
         
         if pygame.time.get_ticks() > next_message_time:
-            loading_text = font.render(random.choice(messages), True, (255, 255, 255))
+            randombullshit = random.choice(messages)
+            loading_text = font.render(randombullshit, True, (255, 255, 255))
             next_message_time = pygame.time.get_ticks() + random.randint(100, 600)
+            pygame.display.set_caption(f"Loading... {randombullshit}")
+            
         
         # Clear the screen
         screen.fill((66,69,73))  # Background color #555
