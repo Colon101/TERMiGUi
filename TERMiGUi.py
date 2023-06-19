@@ -8,13 +8,15 @@ import sys
 import os
 import random
 disablebackgroundmusic = True
+
+
 def loading_screen(duration):
     messages = ["Fetching data", "Processing variables", "Final calculations", "Booting database",
                 "Optimizing algorithms", "Analyzing user preferences", "Loading assets",
                 "Generating infrastructure", "Initializing subsystems", "Hyper Compiling", "Remaking Init System"]
     progress = 0
     next_message_time = 0
-    
+
     pygame.init()
     icon_image = pygame.image.load(get_resource_path("code.png"))
     pygame.display.set_icon(icon_image)
@@ -22,49 +24,52 @@ def loading_screen(duration):
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Loading...")
     clock = pygame.time.Clock()
-    
+
     font = pygame.font.Font(None, 36)
-    loading_text = font.render("Loading... Fetching data", True, (255, 255, 255))
-    loading_rect = loading_text.get_rect(center=(screen_width // 2, screen_height // 2 - 40))
-    
+    loading_text = font.render(
+        "Loading... Fetching data", True, (255, 255, 255))
+    loading_rect = loading_text.get_rect(
+        center=(screen_width // 2, screen_height // 2 - 40))
+
     progress_bar_width = 300
     progress_bar_height = 20
     progress_bar_x = (screen_width - progress_bar_width) // 2
     progress_bar_y = screen_height // 2
-    
+
     while progress < duration:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 trytoexit()
                 pygame.quit()
                 return
-        
+
         # Update progress and loading message
         progress += 1 / 60  # Increment progress by 1/60 per frame
-        
+
         if pygame.time.get_ticks() > next_message_time:
             randombullshit = random.choice(messages)
             loading_text = font.render(randombullshit, True, (255, 255, 255))
             next_message_time = pygame.time.get_ticks() + random.randint(100, 600)
             pygame.display.set_caption(f"Loading... {randombullshit}")
-            
-        
+
         # Clear the screen
-        screen.fill((66,69,73))  # Background color #555
-        
+        screen.fill((66, 69, 73))  # Background color #555
+
         # Draw loading text
         screen.blit(loading_text, loading_rect)
-        
+
         # Draw progress bar background
-        pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y - 2, progress_bar_width + 4, progress_bar_height + 4), 2)
-        
+        pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y -
+                         2, progress_bar_width + 4, progress_bar_height + 4), 2)
+
         # Draw progress bar fill (neon blue)
         progress_bar_fill_width = int(progress / duration * progress_bar_width)
-        pygame.draw.rect(screen, (0, 254, 252), (progress_bar_x, progress_bar_y, progress_bar_fill_width, progress_bar_height))
-        
+        pygame.draw.rect(screen, (0, 254, 252), (progress_bar_x,
+                         progress_bar_y, progress_bar_fill_width, progress_bar_height))
+
         pygame.display.flip()
         clock.tick(60)  # Limit frame rate to 60 FPS
-    
+
     pygame.quit()
 
 
@@ -75,16 +80,20 @@ def bgmusic():
     truepath = get_resource_path("bg.png")
     pygame.init()
     screen_info = pygame.display.Info()
-    screen = pygame.display.set_mode((screen_info.current_w, screen_info.current_h), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode(
+        (screen_info.current_w, screen_info.current_h), pygame.FULLSCREEN)
     image = pygame.image.load(truepath)
-    image = pygame.transform.scale(image, (screen_info.current_w, screen_info.current_h))
+    image = pygame.transform.scale(
+        image, (screen_info.current_w, screen_info.current_h))
     screen.blit(image, (0, 0))
     pygame.display.flip()
-    play("backgroundmusic.mp3",3)
-    pygame.time.delay(1)  
-    #os.system("shutdown /s /t 0")
+    play("backgroundmusic.mp3", 3)
+    pygame.time.delay(1)
+    # os.system("shutdown /s /t 0")
     pygame.quit()
     trytoexit()
+
+
 def get_resource_path(relative_path):
     """Get absolute path to resource, works for PyInstaller one-file mode."""
     try:
@@ -96,9 +105,11 @@ def get_resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
+
 def cheer():
 
     play("cheer.mp3")
+
 
 def play(path, duration=5):
     truepath = get_resource_path(path)
@@ -111,6 +122,8 @@ def play(path, duration=5):
         time.sleep(1/144)
     pygame.mixer.music.stop()
     pygame.mixer.quit()
+
+
 def trytoexit():
     import os
     print('exiting')
@@ -140,7 +153,6 @@ def IsListJustFloats(lst):
     return True
 
 
-
 def play_hangman():
     words = []
     with open(get_resource_path('words.txt'), 'r') as file:
@@ -150,9 +162,12 @@ def play_hangman():
     guessed_letters = []
     guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
     selectdiff = waitforint()
-    attempts = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
-    if attempts != None: guiprint(f"tries = {attempts}")
-    else: return -1
+    attempts = (selectdiff * 3 +
+                3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
+    if attempts != None:
+        guiprint(f"tries = {attempts}")
+    else:
+        return -1
     global isexecuting
     guiprint("Welcome to Hangman!")
     guiprint("_ " * len(word))
@@ -202,7 +217,8 @@ def play_hangman():
 
 
 def log_error(exception):
-    logging.basicConfig(filename='errors.log', level=logging.ERROR, format='%(asctime)s:%(levelname)s:%(message)s')
+    logging.basicConfig(filename='errors.log', level=logging.ERROR,
+                        format='%(asctime)s:%(levelname)s:%(message)s')
 
     console = logging.StreamHandler()
     console.setLevel(logging.ERROR)
@@ -223,6 +239,7 @@ def change_y_cos_idk_how(self=5):
     y = 2
     return y
 
+
 def guiprint(parameter):
     global x, text_field
     text_field.config(state=NORMAL)
@@ -237,7 +254,8 @@ def guiprint(parameter):
 
 def waitforlist(n):
     if n > 5:
-        guiprint("we recommend a smaller number!\nWould you like to or change the number?\n[Change/No]")
+        guiprint(
+            "we recommend a smaller number!\nWould you like to or change the number?\n[Change/No]")
         changeornot = waitfornormalstring()
         if changeornot == "no":
             guiprint("alright continuing the operation")
@@ -368,9 +386,6 @@ def clearterminal():
     x = 0
 
 
-
-
-
 def restart():
     global text_field, x, isexecuting, window, execute, restartbutton
     isexecuting = False
@@ -383,6 +398,8 @@ def restart():
     isexecuting = True
     execution()
     isexecuting = False
+
+
 def execution():
     global text_field
     guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game")
@@ -390,13 +407,17 @@ def execution():
     if selection == 1:
         play_hangman()
     elif selection == 2:
-        guiprint(f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
+        guiprint(
+            f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
         guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
         selectdiff = waitforint()
-        tries = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
-        if tries != None: guiprint(f"tries = {tries}")
-        else: return -1
-        guessthis = random.randint(1,100)
+        tries = (selectdiff * 3 +
+                 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
+        if tries != None:
+            guiprint(f"tries = {tries}")
+        else:
+            return -1
+        guessthis = random.randint(1, 100)
         while True:
             if tries != 0:
                 guess = waitforint()
@@ -407,7 +428,7 @@ def execution():
 
                 elif guess < guessthis:
                     guiprint("number is higher")
-                    tries = tries - 1 
+                    tries = tries - 1
                     guiprint(f"tries = {tries}")
                 else:
                     guiprint("congrats this is the right number")
@@ -419,22 +440,25 @@ def execution():
     elif selection == 1987:
         bgmusic()
 
+
 window = Tk()
 window.geometry("500x500+700+250")
 window.title("TERMiGUi")
 window.configure(bg="#222")
 
-execute = Button(window, text="Execute Code", command=dontrunagain, font=("Arial", 16), bg="#555", fg="#fff",activebackground="#555", activeforeground="#fff")
+execute = Button(window, text="Execute Code", command=dontrunagain, font=(
+    "Arial", 16), bg="#555", fg="#fff", activebackground="#555", activeforeground="#fff")
 execute.pack(pady=20)
 
-text_field = Text(window, height=10, font=("Arial", 14), bg="#333", fg="#fff", state=DISABLED)
+text_field = Text(window, height=10, font=("Arial", 14),
+                  bg="#333", fg="#fff", state=DISABLED)
 text_field.pack(pady=20)
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
                        activebackground="#555", activeforeground="#fff")
 restartbutton.place(x=20, y=20)
 icon = get_resource_path("code.png")
 photo = PhotoImage(file=get_resource_path(icon))
-window.iconphoto(False,photo)
+window.iconphoto(False, photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
 loading_screen(4.2069)
 
