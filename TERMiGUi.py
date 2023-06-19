@@ -11,7 +11,7 @@ disablebackgroundmusic = True
 def loading_screen(duration):
     messages = ["Fetching data", "Processing variables", "Final calculations", "Booting database",
                 "Optimizing algorithms", "Analyzing user preferences", "Loading assets",
-                "Generating infrastructure", "Initializing subsystems","Hyper Compiling","Remaking Init System"]
+                "Generating infrastructure", "Initializing subsystems", "Hyper Compiling", "Remaking Init System"]
     progress = 0
     next_message_time = 0
     
@@ -24,7 +24,7 @@ def loading_screen(duration):
     clock = pygame.time.Clock()
     
     font = pygame.font.Font(None, 36)
-    loading_text = font.render("Loading... Fetching data", True, (0, 0, 0))
+    loading_text = font.render("Loading... Fetching data", True, (255, 255, 255))
     loading_rect = loading_text.get_rect(center=(screen_width // 2, screen_height // 2 - 40))
     
     progress_bar_width = 300
@@ -43,11 +43,11 @@ def loading_screen(duration):
         progress += 1 / 60  # Increment progress by 1/60 per frame
         
         if pygame.time.get_ticks() > next_message_time:
-            loading_text = font.render(random.choice(messages), True, (0, 0, 0))
+            loading_text = font.render(random.choice(messages), True, (255, 255, 255))
             next_message_time = pygame.time.get_ticks() + random.randint(100, 600)
         
         # Clear the screen
-        screen.fill((255, 255, 255))
+        screen.fill((66,69,73))  # Background color #555
         
         # Draw loading text
         screen.blit(loading_text, loading_rect)
@@ -55,12 +55,12 @@ def loading_screen(duration):
         # Draw progress bar background
         pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y - 2, progress_bar_width + 4, progress_bar_height + 4), 2)
         
-        # Draw progress bar fill
+        # Draw progress bar fill (neon blue)
         progress_bar_fill_width = int(progress / duration * progress_bar_width)
-        pygame.draw.rect(screen, (190, 190, 190), (progress_bar_x, progress_bar_y, progress_bar_fill_width, progress_bar_height))
+        pygame.draw.rect(screen, (0, 254, 252), (progress_bar_x, progress_bar_y, progress_bar_fill_width, progress_bar_height))
         
         pygame.display.flip()
-        clock.tick(30)  # Limit frame rate to 30 FPS
+        clock.tick(60)  # Limit frame rate to 60 FPS
     
     pygame.quit()
 
