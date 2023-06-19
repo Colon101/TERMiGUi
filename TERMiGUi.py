@@ -1,7 +1,7 @@
 from tkinter import *
 import logging
 import os
-
+import time
 
 import pygame
 import sys
@@ -43,7 +43,6 @@ def cheer():
     play("cheer.mp3")
 
 def play(path, duration=5):
-    import time
     truepath = get_resource_path(path)
     pygame.mixer.init()
     pygame.mixer.music.load(truepath)
@@ -51,6 +50,7 @@ def play(path, duration=5):
     start_time = time.time()
     while pygame.mixer.music.get_busy() and time.time() - start_time < duration:
         window.update()
+        time.sleep(1/144)
     pygame.mixer.music.stop()
     pygame.mixer.quit()
 def trytoexit():
@@ -233,6 +233,7 @@ def waitforstring():
 
     while y == 0:
         window.update()
+        time.sleep(1/144)
     y = 0
     thing = userinputentry.get()
     userinputbutton.destroy()
@@ -253,6 +254,7 @@ def waitfornormalstring():
 
     while y == 0:
         window.update()
+        time.sleep(1/144)
     y = 0
     thing = userinputentry.get()
     userinputbutton.destroy()
@@ -272,6 +274,7 @@ def waitforint():
 
     while y == 0:
         window.update()
+        time.sleep(1/144)
     y = 0
     thing = userinputentry.get()
     userinputbutton.destroy()
