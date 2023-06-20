@@ -41,3 +41,16 @@ if you wanna share this crap around for some reason the exe is in dist\code.exe 
 4. add `C:\Users\YOURUSERNAME\AppData\Local\Programs\Python\Python311\Scripts`
 5. click on okay 3 times to exit all 3 programs and restart
 6. recompile the program using the Tutorial
+
+### Submiting issues
+
+if all the steps above did not work
+
+you may submit an issue with this format
+
+1. the title should be just the type of error like an AttributeError and the line if you're running the example if not just the message after it
+2. inside the issue show me the entire error and if you modified it send me the source code too
+3. make sure you read the ENTIRE README.md file before submitting an issue and you can do so by adding at the end: I read the README and wish to recieve help about this error
+
+if you passed this you may submit your issue to
+https://github.com/Colon101/TERMiGUi/issues/new
