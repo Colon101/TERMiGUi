@@ -251,12 +251,6 @@ x = 0
 y = 0
 
 
-def change_y_cos_idk_how(self=5):
-    global y
-    y = 2
-    return y
-
-
 def guiprint(parameter):
     global x, text_field
     text_field.config(state=NORMAL)
@@ -316,9 +310,10 @@ def waitforstring():
     global y, window
     userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
     userinputentry.pack(pady=10)
-    userinputentry.bind('<Return>', change_y_cos_idk_how)
+    userinputentry.bind(
+        '<Return>', lambda event=None: globals().__setitem__('y', 2))
     userinputentry.focus_set()
-    userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
+    userinputbutton = Button(window, text="Submit", command=lambda event=None: globals().__setitem__('y', 2), font=("Arial", 14), bg="#555",
                              fg="#fff", activebackground="#555", activeforeground="#fff")
     userinputbutton.pack(pady=10)
 
@@ -337,9 +332,10 @@ def waitfornormalstring():
     global y, window
     userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
     userinputentry.pack(pady=10)
-    userinputentry.bind('<Return>', change_y_cos_idk_how)
+    userinputentry.bind(
+        '<Return>', lambda event=None: globals().__setitem__('y', 2))
     userinputentry.focus_set()
-    userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
+    userinputbutton = Button(window, text="Submit", command=lambda event=None: globals().__setitem__('y', 2), font=("Arial", 14), bg="#555",
                              fg="#fff", activebackground="#555", activeforeground="#fff")
     userinputbutton.pack(pady=10)
 
@@ -357,9 +353,10 @@ def waitforint():
     global y, window
     userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
     userinputentry.pack(pady=10)
-    userinputentry.bind('<Return>', change_y_cos_idk_how)
+    userinputentry.bind(
+        '<Return>', lambda event=None: globals().__setitem__('y', 2))
     userinputentry.focus_set()
-    userinputbutton = Button(window, text="Submit", command=change_y_cos_idk_how, font=("Arial", 14), bg="#555",
+    userinputbutton = Button(window, text="Submit", command=lambda event=None: globals().__setitem__('y', 2), font=("Arial", 14), bg="#555",
                              fg="#fff", activebackground="#555", activeforeground="#fff")
     userinputbutton.pack(pady=10)
 
