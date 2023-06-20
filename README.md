@@ -32,3 +32,12 @@ if for some reason you're using this you should stop and learn tkinter library i
 4. check that the program launched if not read the terminal and look at the instructions 
 
 if you wanna share this crap around for some reason the exe is in dist\code.exe if you didnt change it or whatever
+
+
+## Fix error with compiler
+1. click on start and search `Enviroment Variables`
+2. click on `Enviroment Variables...` on the bottom of the page
+3. select Path and click on edit
+4. add `C:\Users\YOURUSERNAME\AppData\Local\Programs\Python\Python311\Scripts`
+5. click on okay 3 times to exit all 3 programs and restart
+6. recompile the program using the Tutorial
