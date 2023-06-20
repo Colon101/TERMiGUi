@@ -7,7 +7,7 @@ import sys
 import random
 from re import match
 
-disablebackgroundmusic = True
+disablebackgroundmusic = False
 
 
 def safe_math(expression):
@@ -123,6 +123,7 @@ def get_resource_path(relative_path):
 def cheer():
 
     play("cheer.mp3")
+    return -1
 
 
 def play(path, duration=5):
@@ -136,6 +137,7 @@ def play(path, duration=5):
         time.sleep(1/144)
     pygame.mixer.music.stop()
     pygame.mixer.quit()
+    return -1
 
 
 def trytoexit():
@@ -489,5 +491,7 @@ photo = PhotoImage(file=get_resource_path(icon))
 window.iconphoto(False, photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
 loading_screen(4.2069)
-
+isexecuting = True
+execution()
+isexecuting = False
 window.mainloop()
