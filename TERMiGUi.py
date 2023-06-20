@@ -7,6 +7,8 @@ import sys
 import random
 from re import match
 
+disablebackgroundmusic = True
+
 
 def safe_math(expression):
     pattern = r'^[-+*/()\d\s]+$'
@@ -14,9 +16,6 @@ def safe_math(expression):
         return eval(expression)
     else:
         return "Invalid math expression"
-
-
-disablebackgroundmusic = True
 
 
 def loading_screen(duration):
