@@ -6,14 +6,15 @@ you can use compile_and_execute.ps1 to just have an hangman example but you can 
 if for some reason you're using this you should stop and learn tkinter library instead.
 
 ## Features
-guiprint() - allows you to just print something into a text field
+`guiprint()` - allows you to just print something into a text field
 
-waitforstring() - returns a user input of a lowered string
+`waitforstring()` - returns a user input of a lowered string
 
-waitforwhatevertypeofvar() - should return a user input of whatever type of var
+`waitforwhatevertypeofvar()` - should return a user input of whatever type of var
 
-bgmusic() - interesting maybe try to call it?
+`bgmusic()` - interesting maybe try to call it?
 
+`safe_math(expression)` - lets you do math on the fly with gui
 and a brand new loading screen
 
 # Tutorial to compile on your own the example
