@@ -10,12 +10,19 @@ if for some reason you're using this you should stop and learn tkinter library i
 
 `waitforstring()` - returns a user input of a lowered string
 
-`waitforwhatevertypeofvar()` - should return a user input of whatever type of var
+`waitfornoramstring()` - returns a var without lowering it
+
+`waitforint()` - returns a int that the user inserted (no need for try except already done)
+
+`waitforlist() - returns list of var and automatically converts nums to floats and you can check that using `islistjustfloats(listname)`
+
+`islistjustfloats(listname)` returns a bool depeding of all of the nums can be converted else it will return False and you can use that to error catch
 
 `bgmusic()` - interesting maybe try to call it?
 
 `safe_math(expression)` - lets you do math on the fly with gui
-and a brand new loading screen
+
+`loading_screen(TimeInSeconds)` will present a loading screen lasting seconds inserted to put in the background while your program is booting and can be a nice feature for loading massive files
 
 # Tutorial to compile on your own the example
 
