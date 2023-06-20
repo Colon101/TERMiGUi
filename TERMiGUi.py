@@ -9,15 +9,10 @@ import re
 
 
 def safe_math(expression):
-    # Define a regular expression pattern to match valid math expressions
     pattern = r'^[-+*/()\d\s]+$'
-
-    # Check if the expression matches the pattern
     if re.match(pattern, expression):
-        # Evaluate the expression using eval() if it's a valid math expression
         return eval(expression)
     else:
-        # Return an error message if the expression is invalid
         return "Invalid math expression"
 
 
@@ -57,8 +52,7 @@ def loading_screen(duration):
                 pygame.quit()
                 return
 
-        # Update progress and loading message
-        progress += 1 / 60  # Increment progress by 1/60 per frame
+        progress += 1 / 60  
 
         if pygame.time.get_ticks() > next_message_time:
             randombullshit = random.choice(messages)
@@ -66,23 +60,23 @@ def loading_screen(duration):
             next_message_time = pygame.time.get_ticks() + random.randint(100, 600)
             pygame.display.set_caption(f"Loading... {randombullshit}")
 
-        # Clear the screen
-        screen.fill((66, 69, 73))  # Background color #555
+       
+        screen.fill((66, 69, 73))  
 
-        # Draw loading text
+       
         screen.blit(loading_text, loading_rect)
 
-        # Draw progress bar background
+      
         pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y -
                          2, progress_bar_width + 4, progress_bar_height + 4), 2)
 
-        # Draw progress bar fill (neon blue)
+       
         progress_bar_fill_width = int(progress / duration * progress_bar_width)
         pygame.draw.rect(screen, (0, 254, 252), (progress_bar_x,
                          progress_bar_y, progress_bar_fill_width, progress_bar_height))
 
         pygame.display.flip()
-        clock.tick(60)  # Limit frame rate to 60 FPS
+        clock.tick(60) 
 
     pygame.quit()
 
@@ -109,12 +103,9 @@ def bgmusic():
 
 
 def get_resource_path(relative_path):
-    """Get absolute path to resource, works for PyInstaller one-file mode."""
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except AttributeError:
-        # In regular Python environment, the script's directory is used
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
