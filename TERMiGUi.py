@@ -2,11 +2,25 @@ from tkinter import *
 import logging
 import os
 import time
-
 import pygame
 import sys
-import os
 import random
+import re
+
+
+def safe_math(expression):
+    # Define a regular expression pattern to match valid math expressions
+    pattern = r'^[-+*/()\d\s]+$'
+
+    # Check if the expression matches the pattern
+    if re.match(pattern, expression):
+        # Evaluate the expression using eval() if it's a valid math expression
+        return eval(expression)
+    else:
+        # Return an error message if the expression is invalid
+        return "Invalid math expression"
+
+
 disablebackgroundmusic = True
 
 
@@ -211,8 +225,8 @@ def play_hangman():
 
         if "_" not in display_word:
             guiprint("Congratulations! You won!")
-            cheer()
             isexecuting = False
+            cheer()
             return 0
 
 
@@ -401,11 +415,12 @@ def restart():
 
 
 def execution():
-    global text_field
-    guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game")
+    global text_field, isexecuting
+    guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game\n3. Calculator")
     selection = waitforint()
     if selection == 1:
         play_hangman()
+        isexecuting = False
     elif selection == 2:
         guiprint(
             f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
@@ -432,11 +447,23 @@ def execution():
                     guiprint(f"tries = {tries}")
                 else:
                     guiprint("congrats this is the right number")
+                    isexecuting = False
                     cheer()
                     break
             else:
                 bgmusic()
+                isexecuting = False
                 break
+    elif selection == 3:
+        guiprint("enter math expressions to calculate enter exit to exit")
+        while True:
+            expression = waitforstring()
+            if expression == "exit":
+                isexecuting = False
+                break
+            output = safe_math(expression)
+            guiprint(f"{expression} = {output}")
+
     elif selection == 1987:
         bgmusic()
 
