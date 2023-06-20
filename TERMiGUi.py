@@ -5,12 +5,12 @@ import time
 import pygame
 import sys
 import random
-import re
+from re import match
 
 
 def safe_math(expression):
     pattern = r'^[-+*/()\d\s]+$'
-    if re.match(pattern, expression):
+    if match(pattern, expression):
         return eval(expression)
     else:
         return "Invalid math expression"
