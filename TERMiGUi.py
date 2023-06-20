@@ -472,6 +472,8 @@ def execution():
 window = Tk()
 window.geometry("500x500+700+250")
 window.title("TERMiGUi")
+window.update()
+loading_screen(4.2069)
 window.configure(bg="#222")
 
 execute = Button(window, text="Execute Code", command=dontrunagain, font=(
@@ -488,7 +490,6 @@ icon = get_resource_path("code.png")
 photo = PhotoImage(file=get_resource_path(icon))
 window.iconphoto(False, photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
-loading_screen(4.2069)
 isexecuting = True
 execution()
 isexecuting = False
