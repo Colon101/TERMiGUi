@@ -21,7 +21,21 @@ def safe_math(expression):
 def loading_screen(duration):
     messages = ["Fetching data", "Processing variables", "Final calculations", "Booting database",
                 "Optimizing algorithms", "Analyzing user preferences", "Loading assets",
-                "Generating infrastructure", "Initializing subsystems", "Hyper Compiling", "Remaking Init System"]
+                "Generating infrastructure", "Initializing subsystems", "Hyper Compiling",
+                "Remaking Init System", "Decrypting secure files", "Quantum entangling data",
+                "Assembling virtual particles", "Constructing neural pathways",
+                "Quantifying metaphysical concepts", "Harmonizing quantum harmonics",
+                "Simulating alternate realities", "Building a digital metropolis",
+                "Translating binary into emotions", "Synthesizing cosmic vibrations",
+                "Unraveling the fabric of space-time", "Engaging time dilation protocols",
+                "Unleashing the power of imagination", "Converging parallel universes",
+                "Capturing ethereal fragments", "Resolving quantum paradoxes",
+                "Transcending physical dimensions", "Infusing code with cosmic energy",
+                "Augmenting reality with dreams", "Initiating neural network connections",
+                "Compiling consciousness into data", "Optimizing infinite possibilities",
+                "Unraveling the secrets of the universe", "Defying logical limitations",
+                "Quantum teleporting data packets"]
+
     progress = 0
     next_message_time = 0
 
@@ -33,17 +47,17 @@ def loading_screen(duration):
     pygame.display.set_caption("Loading...")
     clock = pygame.time.Clock()
 
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, 25)
     loading_text = font.render(
         "Loading... Fetching data", True, (255, 255, 255))
-    loading_rect = loading_text.get_rect(
-        center=(screen_width // 2, screen_height // 2 - 40))
 
     progress_bar_width = 300
     progress_bar_height = 20
     progress_bar_x = (screen_width - progress_bar_width) // 2
     progress_bar_y = screen_height // 2
 
+    loading_rect = loading_text.get_rect(
+        midleft=(progress_bar_x, progress_bar_y - 20))
     while progress < duration:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -56,7 +70,7 @@ def loading_screen(duration):
         if pygame.time.get_ticks() > next_message_time:
             randombullshit = random.choice(messages)
             loading_text = font.render(randombullshit, True, (255, 255, 255))
-            next_message_time = pygame.time.get_ticks() + random.randint(100, 600)
+            next_message_time = pygame.time.get_ticks() + random.randint(50, 400)
             pygame.display.set_caption(f"Loading... {randombullshit}")
 
         screen.fill((66, 69, 73))
