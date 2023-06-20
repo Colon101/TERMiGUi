@@ -11,8 +11,9 @@ disablebackgroundmusic = True
 
 
 def safe_math(expression):
-    pattern = r'^[-+*/()\d\s]+$'
+    pattern = r'^[-+*/()\d\s^]+$'
     if match(pattern, expression):
+        expression = expression.replace('^', '**')
         return eval(expression)
     else:
         return "Invalid math expression"
