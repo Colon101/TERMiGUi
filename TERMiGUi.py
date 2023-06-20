@@ -7,7 +7,7 @@ import sys
 import random
 from re import match
 
-disablebackgroundmusic = False
+disablebackgroundmusic = True
 
 
 def safe_math(expression):
