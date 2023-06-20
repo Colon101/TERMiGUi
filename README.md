@@ -14,7 +14,7 @@ if for some reason you're using this you should stop and learn tkinter library i
 
 `waitforint()` - returns a int that the user inserted (no need for try except already done)
 
-`waitforlist() - returns list of var and automatically converts nums to floats and you can check that using `islistjustfloats(listname)`
+`waitforlist()` - returns list of var and automatically converts nums to floats and you can check that using `islistjustfloats(listname)
 
 `islistjustfloats(listname)` returns a bool depeding of all of the nums can be converted else it will return False and you can use that to error catch
 
