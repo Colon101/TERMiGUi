@@ -446,7 +446,7 @@ icon = get_resource_path("code.png")
 photo = PhotoImage(file=get_resource_path(icon))
 window.iconphoto(False, photo)
 window.protocol("WM_DELETE_WINDOW", trytoexit)
-loading_screen(4.2069)
+loading_screen(0.5)
 isexecuting = True
 execution()
 isexecuting = False
