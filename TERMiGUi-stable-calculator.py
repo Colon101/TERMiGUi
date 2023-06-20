@@ -1,4 +1,4 @@
-#you should use this stable version to run your own code in the def execution() function for more stability over the examples
+# you should use this stable version to run your own code in the def execution() function for more stability over the examples
 from tkinter import *
 import logging
 import os
@@ -18,10 +18,6 @@ def safe_math(expression):
         return "Invalid math expression"
 
 
-
-
-
-
 def get_resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -29,10 +25,6 @@ def get_resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
-
-
-
-
 
 
 def trytoexit():
@@ -62,6 +54,7 @@ def IsListJustFloats(lst):
             else:
                 return False
     return True
+
 
 def log_error(exception):
     logging.basicConfig(filename='errors.log', level=logging.ERROR,
@@ -246,6 +239,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
+    # simple math calculator example you can remove this and run your code here ;p
     guiprint("enter math expressions to calculate enter exit to exit")
     while True:
         expression = waitforstring()
