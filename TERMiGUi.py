@@ -52,7 +52,7 @@ def loading_screen(duration):
                 pygame.quit()
                 return
 
-        progress += 1 / 60  
+        progress += 1 / 60
 
         if pygame.time.get_ticks() > next_message_time:
             randombullshit = random.choice(messages)
@@ -60,23 +60,19 @@ def loading_screen(duration):
             next_message_time = pygame.time.get_ticks() + random.randint(100, 600)
             pygame.display.set_caption(f"Loading... {randombullshit}")
 
-       
-        screen.fill((66, 69, 73))  
+        screen.fill((66, 69, 73))
 
-       
         screen.blit(loading_text, loading_rect)
 
-      
         pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y -
                          2, progress_bar_width + 4, progress_bar_height + 4), 2)
 
-       
         progress_bar_fill_width = int(progress / duration * progress_bar_width)
         pygame.draw.rect(screen, (0, 254, 252), (progress_bar_x,
                          progress_bar_y, progress_bar_fill_width, progress_bar_height))
 
         pygame.display.flip()
-        clock.tick(60) 
+        clock.tick(60)
 
     pygame.quit()
 
@@ -409,6 +405,7 @@ def execution():
     global text_field, isexecuting
     guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game\n3. Calculator")
     selection = waitforint()
+    clearterminal()
     if selection == 1:
         play_hangman()
         isexecuting = False
