@@ -50,12 +50,63 @@ def calculate_crack_time(password, crack_speed=20000000000):
     if cracked > 365:
         cracked = cracked / 365
         time_ = "years"
-    if time_ == "years" and cracked > 100:
-        cracked = cracked / 100
-        time_ = "centuries"
-    if time_ == "centuries" and cracked > 1000:
+    if time_ == "years" and cracked > 1000:
         cracked = cracked / 1000
-        time_ = "millennia"
+        time_ = "thousand years"
+    if time_ == "thousand years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "million years"
+    if time_ == "million years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "billion years"
+    if time_ == "billion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "trillion years"
+    if time_ == "trillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "quadrillion years"
+    if time_ == "quadrillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "quintillion years"
+    if time_ == "quintillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "sextillion years"
+    if time_ == "sextillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "septillion years"
+    if time_ == "septillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "octillion years"
+    if time_ == "octillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "nonillion years"
+    if time_ == "nonillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "decillion years"
+    if time_ == "decillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "undecillion years"
+    if time_ == "undecillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "duodecillion years"
+    if time_ == "duodecillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "tredecillion years"
+    if time_ == "tredecillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "quattuordecillion years"
+    if time_ == "quattuordecillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "quinquadecillion years"
+    if time_ == "quinquadecillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "sedecillion years"
+    if time_ == "sedecillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "septendecillion years"
+    if time_ == "septendecillion years" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "octodecillion years"
 
     return "Time to crack password: {:.2f} {}".format(cracked, time_)
 
