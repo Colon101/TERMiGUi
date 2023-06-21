@@ -448,8 +448,9 @@ def waitforstring():
     return thing
 
 
-def waitfornormalstring():
+def waitfornormalstring(hide=0):
     global y, window
+
     userinputentry = Entry(window, font=("Arial", 14), bg="#333", fg="#fff")
     userinputentry.pack(pady=10)
     userinputentry.bind(
@@ -458,6 +459,14 @@ def waitfornormalstring():
     userinputbutton = Button(window, text="Submit", command=lambda event=None: globals().__setitem__('y', 2), font=("Arial", 14), bg="#555",
                              fg="#fff", activebackground="#555", activeforeground="#fff")
     userinputbutton.pack(pady=10)
+    if hide != 0:
+        userinputentry.config(show="*")
+        reveal = Button(window, text='Reveal', command=lambda: userinputentry.config(show=""), font=('Arial', 16), bg="#555", fg="#fff",
+                        activebackground="#555", activeforeground="#fff")
+        reveal.place(x=400, y=350)
+        hideagain = Button(window, text="Hide", comman=lambda: userinputentry.config(show="*"), font=('Arial', 16), bg="#555", fg="#fff",
+                           activebackground="#555", activeforeground="#fff")
+        hideagain.place(x=40, y=350)
 
     while y == 0:
         window.update()
@@ -536,7 +545,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game\n3. Calculator\n4. Password generator")
+    guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game\n3. Calculator\n4. Password generator\n5. Password Strength Test")
     selection = waitforint()
     clearterminal()
     if selection == 1:
@@ -600,12 +609,17 @@ def execution():
                 password = password + random.choice(char)
         guiprint(f"Generated password: {password}")
         guiprint(f"{calculate_crack_time(password)}")
+    elif selection == 5:
+        guiprint("Eneter password")
+        passwd = waitfornormalstring("hide")
+        guiprint(f"{calculate_crack_time(passwd)}")
     elif selection == 1987:
         bgmusic()
 
 
 window = Tk()
 window.geometry("500x500+700+250")
+window.resizable(False, False)
 window.title("TERMiGUi")
 window.update()
 loading_screen(4.2069)
