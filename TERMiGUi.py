@@ -111,7 +111,9 @@ def calculate_crack_time(password, crack_speed=20000000000):
     if time_ == "septendecillion years" and cracked > 1000:
         cracked = cracked / 1000
         time_ = "octodecillion years"
-
+    if "{:.2f}".format(cracked) == "0.00":
+        cracked = 0.01
+    loading_screen(2.5, "yes")
     return "Time to crack password: {:.2f} {}".format(cracked, time_)
 
 
@@ -124,7 +126,7 @@ def safe_math(expression):
         return "Invalid math expression"
 
 
-def loading_screen(duration):
+def loading_screen(duration, isforpass=1):
     messages = ["Fetching data",
                 "Processing variables",
                 "Final calculations",
@@ -160,7 +162,9 @@ def loading_screen(duration):
                 "Unraveling the secrets of the universe",
                 "Defying logical limitations",
                 "Quantum teleporting data packets"]
-
+    if isforpass != 1:
+        messages = ["Calculating Password",
+                    "Running Megahashes", "Checking Brute Force"]
     progress = 0
     next_message_time = 0
 
@@ -483,6 +487,9 @@ def waitfornormalstring(hide=0):
     thing = userinputentry.get()
     userinputbutton.destroy()
     userinputentry.destroy()
+    if hide != 0:
+        reveal.destroy()
+        hideagain.destroy()
     return thing
 
 
