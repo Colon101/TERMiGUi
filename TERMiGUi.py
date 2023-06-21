@@ -1,3 +1,4 @@
+from __future__ import division
 from tkinter import *
 import logging
 import os
@@ -6,8 +7,57 @@ import pygame
 import sys
 import random
 from re import match
-
 disablebackgroundmusic = True
+
+
+def calculate_crack_time(password, crack_speed=20000000000):
+    entropy = 0
+
+    policies = {'Uppercase characters': 0,
+                'Lowercase characters': 0,
+                'Special characters': 0,
+                'Numbers': 0}
+
+    entropies = {'Uppercase characters': 26,
+                 'Lowercase characters': 26,
+                 'Special characters': 33,
+                 'Numbers': 10}
+
+    pass_len = len(password)
+
+    for char in password:
+        if match("[0-9]", char):
+            policies["Numbers"] += 1
+        elif match("[a-z]", char):
+            policies["Lowercase characters"] += 1
+        elif match("[A-Z]", char):
+            policies["Uppercase characters"] += 1
+        else:
+            policies["Special characters"] += 1
+
+    del password  # Remove password from memory
+
+    entropy = sum(entropies[policy]
+                  for policy in policies.keys() if policies[policy] > 0)
+
+    # Calculate the time to crack
+    cracked = ((entropy ** pass_len) / crack_speed) / 3600  # Hours in seconds
+
+    time_ = "hours"
+    if cracked > 24:
+        cracked = cracked / 24
+        time_ = "days"
+    if cracked > 365:
+        cracked = cracked / 365
+        time_ = "years"
+    if time_ == "years" and cracked > 100:
+        cracked = cracked / 100
+        time_ = "centuries"
+    if time_ == "centuries" and cracked > 1000:
+        cracked = cracked / 1000
+        time_ = "millennia"
+
+    return "Time to crack password: {:.2f} {}".format(cracked, time_)
 
 
 def safe_math(expression):
@@ -435,7 +485,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game\n3. Calculator")
+    guiprint(f"would you like to play \n1. Hangman or \n2. Guess Game\n3. Calculator\n4. Password generator")
     selection = waitforint()
     clearterminal()
     if selection == 1:
@@ -483,7 +533,22 @@ def execution():
                 break
             output = safe_math(expression)
             guiprint(f"{expression} = {output}")
-
+    elif selection == 4:
+        guiprint("Welcome to the password generator")
+        symbols = ["$", "#", "&", "@", "%", "*", "!", "?", "^",
+                   "~", "(", ")", "_", "+", "=", "-", "<", ">", "/", "`"]
+        char = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+                'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        guiprint(f"Type the size of the password!")
+        password = ""
+        size = waitforint()
+        for i in range(size):
+            if random.randint(1, 3) == 1:
+                password = password + random.choice(symbols)
+            else:
+                password = password + random.choice(char)
+        guiprint(f"Generated password: {password}")
+        guiprint(f"{calculate_crack_time(password)}")
     elif selection == 1987:
         bgmusic()
 
