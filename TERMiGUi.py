@@ -10,12 +10,15 @@ import random
 from re import match
 import bitlyshortener
 disablebackgroundmusic = True
+apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 
 def shorten(string):
-    apikey = ""
-    with open(get_resource_path('.apikey.txt'), 'r') as file:  # use your own
-        apikey = file.read()
+    global apikey
+    if apikey == None:
+        apikey = ""
+        with open(get_resource_path('.apikey.txt'), 'r') as file:  # use your own
+            apikey = file.read()
     shortener = bitlyshortener.Shortener(tokens=[apikey], max_cache_size=256)
     try:
         return shortener.shorten_urls([string])[0]
@@ -328,11 +331,6 @@ def IsListJustFloats(lst):
             else:
                 return False
     return True
-
-
-trytoshorten = shorten(
-    "https://www.amazon.com/VALORANT-25-Gift-Card-Online/dp/B088GD5WD4/ref=sr_1_1?crid=3S8OC72Z2FCGJ&keywords=valorant+gift+card+25&qid=1687383215&sprefix=valorant+%2Caps%2C261&sr=8-1")
-print(trytoshorten)
 
 
 def play_hangman():
