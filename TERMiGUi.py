@@ -549,7 +549,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"would you like to play \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password generator\n5. Password Strength Test")
+    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password generator\n5. Password Strength Test")
     selection = waitforint()
     clearterminal()
     if selection == 1:
