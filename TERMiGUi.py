@@ -398,7 +398,7 @@ def play_hangman():
             return 0
 
 
-def log_error(exception):
+def log_error(exception, disp=None):
     logging.basicConfig(filename='errors.log', level=logging.ERROR,
                         format='%(asctime)s:%(levelname)s:%(message)s')
 
@@ -407,7 +407,8 @@ def log_error(exception):
     formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
-    messagebox.showerror("ERROR", f"ERROR {str(exception)}")
+    if disp != None:
+        messagebox.showerror("ERROR", f"ERROR {str(disp)}")
     logging.error(str(exception))
 
 
@@ -548,8 +549,7 @@ def waitforint():
     try:
         thing = int(thing)
     except ValueError as e:
-        guiprint("Invalid input. Please enter an integer.")
-        log_error(e)
+        log_error(e, "Invalid input. Please enter an integer.")
         return waitforint()
     return thing
 
@@ -565,8 +565,8 @@ def dontrunagain():
         execution()
         isexecuting = False
     else:
-        log_error("user tried clicking on the execute button again")
-        guiprint("The code is already running")
+        log_error("user tried clicking on the execute button again",
+                  "Code already running")
 
 
 def clearterminal():
@@ -666,9 +666,8 @@ def execution():
     elif selection == 1987:
         bgmusic()
     else:
-        guiprint("Error Wrong Number")
         log_error(
-            ValueError(f"Selected wrong number {selection}"))
+            ValueError(f"Selected wrong number {selection}"), "Select a number between 1-6")
 
         return execution()
 
