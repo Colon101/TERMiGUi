@@ -42,9 +42,12 @@ def calculate_crack_time(password, crack_speed=20000000000):
                   for policy in policies.keys() if policies[policy] > 0)
 
     # Calculate the time to crack
-    cracked = ((entropy ** pass_len) / crack_speed) / 3600  # Hours in seconds
+    cracked = ((entropy ** pass_len) / crack_speed)  # Hours in seconds
 
-    time_ = "hours"
+    time_ = "seconds"
+    if cracked > 3600:
+        cracked = cracked / 3600
+        time_ = "hours"
     if cracked > 24:
         cracked = cracked / 24
         time_ = "days"
