@@ -36,13 +36,12 @@ def calculate_crack_time(password, crack_speed=20000000000):
         else:
             policies["Special characters"] += 1
 
-    del password  # Remove password from memory
+    del password
 
     entropy = sum(entropies[policy]
                   for policy in policies.keys() if policies[policy] > 0)
 
-    # Calculate the time to crack
-    cracked = ((entropy ** pass_len) / crack_speed)  # Hours in seconds
+    cracked = ((entropy ** pass_len) / crack_speed)
 
     time_ = "seconds"
     if cracked > 3600:
