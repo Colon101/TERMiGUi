@@ -8,8 +8,23 @@ import pygame
 import sys
 import random
 from re import match
-
+import bitlyshortener
 disablebackgroundmusic = True
+
+
+def shorten(string):
+    apikey = ""
+    with open(get_resource_path('.apikey.txt'), 'r') as file:  # use your own
+        apikey = file.read()
+    shortener = bitlyshortener.Shortener(tokens=[apikey], max_cache_size=256)
+    try:
+        return shortener.shorten_urls([string])[0]
+    except bitlyshortener.exc.RequestError:
+        log_error("Please Provide a Valid URL")
+        clearterminal()
+        global isexecuting
+        isexecuting = False
+        return execution()
 
 
 def calculate_crack_time(password, crack_speed=20000000000):
@@ -315,6 +330,11 @@ def IsListJustFloats(lst):
     return True
 
 
+trytoshorten = shorten(
+    "https://www.amazon.com/VALORANT-25-Gift-Card-Online/dp/B088GD5WD4/ref=sr_1_1?crid=3S8OC72Z2FCGJ&keywords=valorant+gift+card+25&qid=1687383215&sprefix=valorant+%2Caps%2C261&sr=8-1")
+print(trytoshorten)
+
+
 def play_hangman():
     words = []
     with open(get_resource_path('words.txt'), 'r') as file:
@@ -570,7 +590,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password generator\n5. Password Strength Test")
+    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password generator\n5. Password Strength Test\n6. URL Shortner")
     selection = waitforint()
     clearterminal()
     if selection == 1:
@@ -638,6 +658,11 @@ def execution():
         guiprint("Eneter password")
         passwd = waitfornormalstring("hide")
         guiprint(f"{calculate_crack_time(passwd)}")
+    elif selection == 6:
+        guiprint("enter a link")
+        url = waitfornormalstring()
+        shortenurl = shorten(url)
+        guiprint(shortenurl)
     elif selection == 1987:
         bgmusic()
     else:
