@@ -1,4 +1,5 @@
 from __future__ import division
+from tkinter import messagebox
 from tkinter import *
 import logging
 import os
@@ -366,7 +367,7 @@ def log_error(exception):
     formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
-
+    messagebox.showerror("ERROR", f"ERROR {str(exception)}")
     logging.error(str(exception))
 
 
@@ -540,11 +541,8 @@ def restart():
     for widget in window.winfo_children():
         if widget not in [execute, restartbutton, text_field]:
             widget.destroy()
-
-    clearterminal()
-    isexecuting = True
-    execution()
     isexecuting = False
+    dontrunagain()
 
 
 def execution():
@@ -619,6 +617,12 @@ def execution():
         guiprint(f"{calculate_crack_time(passwd)}")
     elif selection == 1987:
         bgmusic()
+    else:
+        guiprint("Error Wrong Number")
+        log_error(
+            ValueError(f"Selected wrong number {selection}"))
+
+        return execution()
 
 
 window = Tk()
