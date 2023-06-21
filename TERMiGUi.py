@@ -185,6 +185,10 @@ def loading_screen(duration):
                 trytoexit()
                 pygame.quit()
                 return
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s and pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                    pygame.quit()
+                    return
 
         progress += 1 / 60
 
