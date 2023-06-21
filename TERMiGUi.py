@@ -18,14 +18,14 @@ def calculate_crack_time(password, crack_speed=20000000000):
                 'Lowercase characters': 0,
                 'Special characters': 0,
                 'Numbers': 0}
-
+    # add strength factors of policies
     entropies = {'Uppercase characters': 26,
                  'Lowercase characters': 26,
                  'Special characters': 33,
                  'Numbers': 10}
 
     pass_len = len(password)
-
+    # assigns the list
     for char in password:
         if match("[0-9]", char):
             policies["Numbers"] += 1
@@ -35,14 +35,14 @@ def calculate_crack_time(password, crack_speed=20000000000):
             policies["Uppercase characters"] += 1
         else:
             policies["Special characters"] += 1
-
+    # clears from ram
     del password
-
+    # summery of policies
     entropy = sum(entropies[policy]
                   for policy in policies.keys() if policies[policy] > 0)
-
+    # calculation of cracked time in seconds
     cracked = ((entropy ** pass_len) / crack_speed)
-
+    # if statements to have a more readable format
     time_ = "seconds"
     if cracked > 3600:
         cracked = cracked / 3600
@@ -110,10 +110,13 @@ def calculate_crack_time(password, crack_speed=20000000000):
     if time_ == "septendecillion years" and cracked > 1000:
         cracked = cracked / 1000
         time_ = "octodecillion years"
+    # makes the user not confused if returns "0.00 seconds"
     if "{:.2f}".format(cracked) == "0.00":
         cracked = 0.01
     loading_screen(2.5, "yes")
     return "Time to crack password: {:.2f} {}".format(cracked, time_)
+
+# makes eval more secure against bad actors
 
 
 def safe_math(expression):
@@ -124,8 +127,11 @@ def safe_math(expression):
     else:
         return "Invalid math expression"
 
+# makes a temporary loading screen while running a calculation
+
 
 def loading_screen(duration, isforpass=1):
+    # init messages
     messages = ["Fetching data",
                 "Processing variables",
                 "Final calculations",
@@ -162,23 +168,26 @@ def loading_screen(duration, isforpass=1):
                 "Defying logical limitations",
                 "Quantum teleporting data packets"]
     if isforpass != 1:
+        # passwd messages
         messages = ["Calculating Password",
                     "Running Megahashes", "Checking Brute Force"]
     progress = 0
     next_message_time = 0
-
+    # starts pygame
     pygame.init()
+    # loads icon
     icon_image = pygame.image.load(get_resource_path("code.png"))
     pygame.display.set_icon(icon_image)
+    # gets geomety
     screen_width, screen_height = 400, 150
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Loading...")
     clock = pygame.time.Clock()
-
+    # inits font
     font = pygame.font.Font(None, 25)
     loading_text = font.render(
         "Loading... Fetching data", True, (255, 255, 255))
-
+    # vars for loading bar
     progress_bar_width = 300
     progress_bar_height = 20
     progress_bar_x = (screen_width - progress_bar_width) // 2
@@ -186,26 +195,28 @@ def loading_screen(duration, isforpass=1):
 
     loading_rect = loading_text.get_rect(
         midleft=(progress_bar_x, progress_bar_y - 20))
+    # checks for pygame.QUIT and quits if so
     while progress < duration:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 trytoexit()
                 pygame.quit()
                 return
+            # loading shortcut
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s and pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.key.get_mods() & pygame.KMOD_SHIFT:
                     pygame.quit()
                     return
 
         progress += 1 / 60
-
+        # gets random message
         if pygame.time.get_ticks() > next_message_time:
             randombullshit = random.choice(messages)
             loading_text = font.render(randombullshit, True, (255, 255, 255))
             next_message_time = pygame.time.get_ticks() + random.randint(50, 400)
             pygame.display.set_caption(f"Loading... {randombullshit}")
 
-        screen.fill((66, 69, 73))
+        screen.fill((66, 69, 73))  # bg color
 
         screen.blit(loading_text, loading_rect)
 
@@ -217,14 +228,16 @@ def loading_screen(duration, isforpass=1):
                          progress_bar_y, progress_bar_fill_width, progress_bar_height))
 
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick(60)  # fps limit
 
     pygame.quit()
+
+# maybe run with disablebackgroundmusic = False?
 
 
 def bgmusic():
     global disablebackgroundmusic
-    if disablebackgroundmusic == True:
+    if disablebackgroundmusic:
         return -1
     truepath = get_resource_path("bg.png")
     pygame.init()
