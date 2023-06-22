@@ -94,7 +94,12 @@ def calculate_crack_time(password, crack_speed=20000000000):
     entropy = sum(entropies[policy]
                   for policy in policies.keys() if policies[policy] > 0)
     # calculation of cracked time in seconds
-    cracked = ((entropy ** pass_len) / crack_speed)
+    try:
+        cracked = ((entropy ** pass_len) / crack_speed)
+    except:
+        log_error("Too high float calc", "Please Enter a smaller numer")
+        clearterminal()
+        return "Error"
     # if statements to have a more readable format
     time_ = "seconds"
     if cracked > 3600:
@@ -166,7 +171,7 @@ def calculate_crack_time(password, crack_speed=20000000000):
     # makes the user not confused if returns "0.00 seconds"
     if "{:.2f}".format(cracked) == "0.00":
         cracked = 0.01
-    loading_screen(2.5, "yes")
+    loading_screen(2.5, isforpass=True)
     return "Time to crack password: {:.2f} {}".format(cracked, time_)
 
 # makes eval more secure against bad actors
@@ -677,16 +682,20 @@ def execution():
                    "~", "(", ")", "_", "+", "=", "-", "<", ">", "/", "`"]
         char = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
                 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-        guiprint(f"Type the size of the password!")
+        guiprint(f"Type the size of the password! (1-20)")
         password = ""
         size = waitforint()
-        for i in range(size):
-            if random.randint(1, 3) == 1:
-                password = password + random.choice(symbols)
-            else:
-                password = password + random.choice(char)
-        guiprint(f"Generated password: {password}")
-        guiprint(f"{calculate_crack_time(password)}")
+        if size > 20 or size <= 0:
+            log_error("Gen-Password-WrongInput",
+                      "Password size should be 1-20")
+        else:
+            for i in range(size):
+                if random.randint(1, 3) == 1:
+                    password = password + random.choice(symbols)
+                else:
+                    password = password + random.choice(char)
+            guiprint(f"Generated password: {password}")
+            guiprint(f"{calculate_crack_time(password)}")
     elif selection == 5:
         guiprint("Eneter password")
         passwd = waitfornormalstring("hide")
