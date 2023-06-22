@@ -1,23 +1,47 @@
 from __future__ import division
-from tkinter import messagebox
 from tkinter import *
-import logging
+from tkinter import messagebox
+from tkinter import filedialog as fd
 import os
-import time
-import pygame
 import sys
+import logging
+import pygame
+import time
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import random
 from re import match
 import bitlyshortener
-from cryptography.fernet import Fernet
-from tkinter import filedialog as fd
+
 disablebackgroundmusic = True
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 
-def encrypt():
-    key = "NaF0SZPCy7SiSNFt8hdvXfK7c5-xf5GggOvNjTvuxXg="
-    fernet = Fernet(key)
+def generate_fernet_key(passphrase):
+
+    # Generate a salt (a random value) for the key derivation function
+    salt = os.urandom(16)
+
+    # Set the number of iterations for the key derivation function (higher values increase security but also take longer)
+    iterations = 100_000
+
+    # Derive the key using PBKDF2HMAC
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=iterations
+    )
+    key = base64.urlsafe_b64encode(kdf.derive(passphrase.encode()))
+
+    return key
+
+
+def encrypt(passphrase):
+
+    fernet = Fernet(generate_fernet_key(passphrase))
     filename = fd.askopenfilename()
     try:
         with open(filename, 'rb') as file:
@@ -32,9 +56,8 @@ def encrypt():
         return encrypt()
 
 
-def decrypt():
-    key = "NaF0SZPCy7SiSNFt8hdvXfK7c5-xf5GggOvNjTvuxXg="
-    fernet = Fernet(key)
+def decrypt(passphrase):
+    fernet = Fernet(generate_fernet_key(passphrase))
     filename = fd.askopenfilename()
     try:
         with open(filename, "rb") as encfile:
