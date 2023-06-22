@@ -24,12 +24,12 @@ def encrypt():
             org = file.read()
         encryptorg = fernet.encrypt(org)
 
-        with open(filename, "wb") as encrypted_file:
+        with open(f"{filename}.encrpted", "wb") as encrypted_file:
             encrypted_file.write(encryptorg)
-        return filename
+        return f"{os.path.basename(filename)}.encrypted"
     except FileNotFoundError as e:
         log_error(e, "Please select a file")
-        trytoexit()
+        return encrypt()
 
 
 def decrypt():
@@ -41,12 +41,12 @@ def decrypt():
             data = encfile.read()
 
         decrypteddata = fernet.decrypt(data)
-        with open(filename, "wb") as timetodec:
+        with open(filename[:-9], "wb") as timetodec:
             timetodec.write(decrypteddata)
-        return filename
+        return os.path.basename(filename[:-9])
     except FileNotFoundError as e:
         log_error(e, "Please select a file")
-        trytoexit()
+        return decrypt()
 
 
 def shorten(string):
@@ -716,11 +716,11 @@ def execution():
         if encordec == 1:
             guiprint("Select a file")
             file = encrypt()
-            guiprint(f"Successfully Encrypted:\n{file}")
+            guiprint(f"Successfully Encrypted To\n{file}")
         elif encordec == 2:
             guiprint("Select a file")
             file = decrypt()
-            guiprint(f"Successfully Decrypted:\n{file}")
+            guiprint(f"Successfully Decrypted To\n{file}")
 
     elif selection == 1987:
         bgmusic()
