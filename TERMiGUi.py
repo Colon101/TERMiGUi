@@ -296,7 +296,8 @@ def loading_screen(duration, isforpass=1):
 def bgmusic():
     global disablebackgroundmusic
     if disablebackgroundmusic:
-        return -1
+        clearterminal()
+        return execution()
     truepath = get_resource_path("bg.png")
     pygame.init()
     screen_info = pygame.display.Info()
@@ -382,11 +383,12 @@ def play_hangman():
     guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
     selectdiff = waitforint()
     attempts = (selectdiff * 3 +
-                3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
+                3) if 1 <= selectdiff <= 3 else log_error("DifficultyError", "entered wrong number try again")
     if attempts != None:
         guiprint(f"tries = {attempts}")
     else:
-        return -1
+        clearterminal()
+        return execution()
     global isexecuting
     guiprint("Welcome to Hangman!")
     guiprint("_ " * len(word))
@@ -418,7 +420,8 @@ def play_hangman():
                 guiprint(f"The word was: {word}")
                 isexecuting = False
                 bgmusic()
-                return 1
+                clearterminal()
+                return execution()
 
         display_word = ""
         for char in word:
@@ -430,10 +433,11 @@ def play_hangman():
         guiprint(display_word)
 
         if "_" not in display_word:
+            clearterminal
             guiprint("Congratulations! You won!")
             isexecuting = False
             cheer()
-            return 0
+            return execution()
 
 
 def log_error(exception, disp=None):
@@ -639,12 +643,13 @@ def execution():
             f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
         guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
         selectdiff = waitforint()
-        tries = (selectdiff * 3 +
-                 3) if 1 <= selectdiff <= 3 else guiprint("entered wrong number try again")
+        tries = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else log_error(
+            "DifficultyError", "entered wrong number try again")
         if tries != None:
             guiprint(f"tries = {tries}")
         else:
-            return -1
+            clearterminal()
+            return execution()
         guessthis = random.randint(1, 100)
         while True:
             if tries != 0:
@@ -722,7 +727,7 @@ def execution():
     else:
         log_error(
             ValueError(f"Selected wrong number {selection}"), "Select a number between 1-6")
-
+        clearterminal()
         return execution()
 
 
