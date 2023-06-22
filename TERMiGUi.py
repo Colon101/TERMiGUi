@@ -9,8 +9,44 @@ import sys
 import random
 from re import match
 import bitlyshortener
+from cryptography.fernet import Fernet
+from tkinter import filedialog as fd
 disablebackgroundmusic = True
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
+
+
+def encrypt():
+    key = "NaF0SZPCy7SiSNFt8hdvXfK7c5-xf5GggOvNjTvuxXg="
+    fernet = Fernet(key)
+    filename = fd.askopenfilename()
+    try:
+        with open(filename, 'rb') as file:
+            org = file.read()
+        encryptorg = fernet.encrypt(org)
+
+        with open(filename, "wb") as encrypted_file:
+            encrypted_file.write(encryptorg)
+        return filename
+    except FileNotFoundError as e:
+        log_error(e, "Please select a file")
+        trytoexit()
+
+
+def decrypt():
+    key = "NaF0SZPCy7SiSNFt8hdvXfK7c5-xf5GggOvNjTvuxXg="
+    fernet = Fernet(key)
+    filename = fd.askopenfilename()
+    try:
+        with open(filename, "rb") as encfile:
+            data = encfile.read()
+
+        decrypteddata = fernet.decrypt(data)
+        with open(filename, "wb") as timetodec:
+            timetodec.write(decrypteddata)
+        return filename
+    except FileNotFoundError as e:
+        log_error(e, "Please select a file")
+        trytoexit()
 
 
 def shorten(string):
@@ -588,7 +624,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password generator\n5. Password Strength Test\n6. URL Shortner")
+    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter")
     selection = waitforint()
     clearterminal()
     if selection == 1:
@@ -661,6 +697,18 @@ def execution():
         url = waitfornormalstring()
         shortenurl = shorten(url)
         guiprint(shortenurl)
+    elif selection == 7:
+        guiprint("Would you like to decrypt or encrypt:\n1. Encrypt\n2. Decrypt")
+        encordec = waitforint()
+        if encordec == 1:
+            guiprint("Select a file")
+            file = encrypt()
+            guiprint(f"Successfully Encrypted:\n{file}")
+        elif encordec == 2:
+            guiprint("Select a file")
+            file = decrypt()
+            guiprint(f"Successfully Decrypted:\n{file}")
+
     elif selection == 1987:
         bgmusic()
     else:
