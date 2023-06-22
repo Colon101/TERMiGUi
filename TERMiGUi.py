@@ -736,13 +736,15 @@ def execution():
     elif selection == 7:
         guiprint("Would you like to decrypt or encrypt:\n1. Encrypt\n2. Decrypt")
         encordec = waitforint()
+        guiprint("select password")
+        usrinputpassword = waitfornormalstring()
         if encordec == 1:
             guiprint("Select a file")
-            file = encrypt()
+            file = encrypt(usrinputpassword)
             guiprint(f"Successfully Encrypted To\n{file}")
         elif encordec == 2:
             guiprint("Select a file")
-            file = decrypt()
+            file = decrypt(usrinputpassword)
             guiprint(f"Successfully Decrypted To\n{file}")
 
     elif selection == 1987:
