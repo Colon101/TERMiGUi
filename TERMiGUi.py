@@ -22,7 +22,7 @@ apikey = None  # insert bitly api key here or make inside of .apikey.txt
 def generate_fernet_key(passphrase):
 
     # Generate a salt (a random value) for the key derivation function
-    salt = os.urandom(16)
+    salt = b"Very Salty Key Generator For Salty Salts (*&*&^*&%*^%)^*&(^*&%*^%$%^&*()&#@$%^&*&*)"
 
     # Set the number of iterations for the key derivation function (higher values increase security but also take longer)
     iterations = 100_000
