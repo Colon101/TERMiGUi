@@ -58,11 +58,9 @@ def shorten(string):
     shortener = bitlyshortener.Shortener(tokens=[apikey], max_cache_size=256)
     try:
         return shortener.shorten_urls([string])[0]
-    except bitlyshortener.exc.RequestError:
-        log_error("Please Provide a Valid URL")
+    except bitlyshortener.exc.RequestError as e:
+        log_error(e, "Please Provide a Valid URL")
         clearterminal()
-        global isexecuting
-        isexecuting = False
         return execution()
 
 
@@ -394,11 +392,12 @@ def play_hangman():
         letter = waitforstring()
 
         if len(letter) != 1 or not letter.isalpha():
-            guiprint("Invalid input. Please enter a single letter.")
+            log_error(ValueError, "Please Enter A Single Letter")
             continue
 
         if letter in guessed_letters:
-            guiprint("You've already guessed that letter. Try again.")
+            log_error("Ran Exsiting letter again",
+                      "You've already guessed that letter. Try again.")
             continue
 
         guessed_letters.append(letter)
