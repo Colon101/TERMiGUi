@@ -73,7 +73,7 @@ def decrypt(passphrase):
             return execution()
     except FileNotFoundError as e:
         log_error(e, "Please select a file")
-        return decrypt()
+        return decrypt(passphrase)
 
 
 def shorten(string):
