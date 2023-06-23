@@ -62,11 +62,15 @@ def decrypt(passphrase):
     try:
         with open(filename, "rb") as encfile:
             data = encfile.read()
-
-        decrypteddata = fernet.decrypt(data)
-        with open(filename[:-9], "wb") as timetodec:
-            timetodec.write(decrypteddata)
-        return os.path.basename(filename[:-9])
+        try:
+            decrypteddata = fernet.decrypt(data)
+            with open(filename[:-9], "wb") as timetodec:
+                timetodec.write(decrypteddata)
+            return os.path.basename(filename[:-9])
+        except:
+            log_error("Failed Passwd", "Wrong Password")
+            clearterminal()
+            return execution()
     except FileNotFoundError as e:
         log_error(e, "Please select a file")
         return decrypt()
