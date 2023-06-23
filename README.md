@@ -54,3 +54,13 @@ you may submit an issue with this format
 
 if you passed this you may submit your issue to
 https://github.com/Colon101/TERMiGUi/issues/new
+
+
+
+## Using base py file
+
+1. Install python
+2. add environment variable to PATH 
+3. restart
+4. Install requirements with pip/3 install requirements.txt
+5. Launch the program
