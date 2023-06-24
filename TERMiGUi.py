@@ -66,20 +66,11 @@ def load_encrypted_data(filename, key):
         return startagain()
 
 
-def change_master_password():
-    guiprint("Enter your current master password: ")
-    current_password = waitfornormalstring(hide="yes")
-    old_key = generate_fernet_key(current_password)
+def change_master_password(data):
     guiprint("Enter your new master password: ")
     new_password = waitfornormalstring(hide="yes")
     new_key = generate_fernet_key(new_password)
-    try:
-        encrypted_data = load_encrypted_data("passwords.json", old_key)
-    except Exception:
-        log_error("Wrong Password", "Wrong password")
-        clearterminal()
-        return startagain()
-    save_encrypted_data(encrypted_data, "passwords.json", new_key)
+    save_encrypted_data(data, "passwords.json", new_key)
 
     guiprint("Master password changed successfully!")
 
@@ -202,7 +193,7 @@ def password_manager():
                 guiprint("Invalid selection.")
 
         elif choice == 5:
-            change_master_password()
+            change_master_password(encrypted_passwords)
         elif choice == 6:
             break
 
