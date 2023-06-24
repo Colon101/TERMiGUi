@@ -15,7 +15,6 @@ import random
 from re import match
 import bitlyshortener
 import json
-disablebackgroundmusic = True
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 
