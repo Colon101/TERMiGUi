@@ -68,7 +68,7 @@ def load_encrypted_data(filename, key):
 
 def password_manager():
     guiprint("Enter your master password: ")
-    master_password = waitfornormalstring()
+    master_password = waitfornormalstring(hide="yes")
     key = generate_fernet_key(master_password)
 
     filename = "passwords.json"
@@ -92,7 +92,7 @@ def password_manager():
             guiprint("Enter the username/email: ")
             username = waitfornormalstring()
             guiprint("Enter the password: ")
-            password = waitfornormalstring()
+            password = waitfornormalstring(hide="yes")
 
             encrypted_password = Fernet(key).encrypt(
                 password.encode()).decode()
@@ -148,9 +148,8 @@ def password_manager():
                         encrypted_password.encode()).decode()
                     guiprint(
                         f"Current password for {username}: {decrypted_password}")
-
-                    new_password = waitfornormalstring(
-                        "Enter the new password: ")
+                    guiprint("Enter the new password: ")
+                    new_password = waitfornormalstring(hide="yes")
                     encrypted_password = Fernet(key).encrypt(
                         new_password.encode()).decode()
                     passwords[username] = encrypted_password
