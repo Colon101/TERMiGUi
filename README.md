@@ -10,7 +10,7 @@ if for some reason you're using this you should stop and learn tkinter library i
 
 `waitforstring()` - returns a user input of a lowered string
 
-`waitfornoramstring()` - returns a var without lowering it
+`waitfornoramstring(hide=0)` - returns a string that is not lowered and if hide isnt equal to 0 it will also make it password like
 
 `waitforint()` - returns a int that the user inserted (no need for try except already done)
 
@@ -20,8 +20,9 @@ if for some reason you're using this you should stop and learn tkinter library i
 
 `safe_math(expression)` - lets you do math on the fly with gui
 
-`loading_screen(TimeInSeconds)` will present a loading screen lasting seconds inserted to put in the background while your program is booting and can be a nice feature for loading massive files
+`loading_screen(TimeInSeconds)` - will present a loading screen lasting seconds inserted to put in the background while your program is booting and can be a nice feature for loading massive files
 
+`startagain()` - asks the user if to start execution again or exit the program
 # Tutorial to compile on your own the example
 
 1. click on code then download as a zip or git clone this repository

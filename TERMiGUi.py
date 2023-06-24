@@ -75,7 +75,7 @@ def password_manager():
             guiprint("Enter the username/email: ")
             username = waitfornormalstring()
             guiprint("Enter the password: ")
-            password = waitfornormalstring()
+            password = waitfornormalstring(hide="yes")
 
             encrypted_password = Fernet(key).encrypt(
                 password.encode()).decode()
@@ -795,7 +795,7 @@ def execution():
             guiprint(f"{calculate_crack_time(password)}")
     elif selection == 5:
         guiprint("Eneter password")
-        passwd = waitfornormalstring("hide")
+        passwd = waitfornormalstring(hide="yes")
         guiprint(f"{calculate_crack_time(passwd)}")
     elif selection == 6:
         guiprint("enter a link")
@@ -806,7 +806,7 @@ def execution():
         guiprint("Would you like to decrypt or encrypt:\n1. Encrypt\n2. Decrypt")
         encordec = waitforint()
         guiprint("select password")
-        usrinputpassword = waitfornormalstring()
+        usrinputpassword = waitfornormalstring(hide="yes")
         if encordec == 1:
             guiprint("Select a file")
             file = encrypt(usrinputpassword)
