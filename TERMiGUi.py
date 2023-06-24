@@ -68,7 +68,7 @@ def load_encrypted_data(filename, key):
 
 def password_manager():
     guiprint("Enter your master password: ")
-    master_password = waitfornormalstring(hide="yes")
+    master_password = waitfornormalstring()
     key = generate_fernet_key(master_password)
 
     filename = "passwords.json"
@@ -82,15 +82,18 @@ def password_manager():
         guiprint("\nPassword Manager Menu:")
         guiprint("1. Add Password")
         guiprint("2. Retrieve Password")
-        guiprint("3. Exit")
-        guiprint("Enter your choice (1-3): ")
+        guiprint("3. Modify Password")
+        guiprint("4. Delete Password")
+        guiprint("5. Exit")
+        guiprint("Enter your choice (1-5): ")
         choice = waitforint()
+
         if choice == 1:
             guiprint("Enter the username/email: ")
             username = waitfornormalstring()
             guiprint("Enter the password: ")
-            password = waitfornormalstring(hide="yes")
-            verify(f"Username: {username}\nPassword: {password}")
+            password = waitfornormalstring()
+
             encrypted_password = Fernet(key).encrypt(
                 password.encode()).decode()
 
@@ -107,7 +110,8 @@ def password_manager():
             guiprint("Saved Usernames/Emails:")
             for idx, username in enumerate(passwords, start=1):
                 guiprint(f"{idx}. {username}")
-            guiprint("Enter the number of the username/email:")
+            guiprint(
+                "Enter the number of the username/email to retrieve password: ")
             selection = waitforint()
             usernames = list(passwords.keys())
 
@@ -125,11 +129,66 @@ def password_manager():
                 guiprint("Invalid selection.")
 
         elif choice == 3:
+            if not passwords:
+                guiprint("No passwords saved.")
+                continue
+
+            guiprint("Saved Usernames/Emails:")
+            for idx, username in enumerate(passwords, start=1):
+                guiprint(f"{idx}. {username}")
+            guiprint("Enter the number of the username/email to modify password: ")
+            selection = waitforint()
+            usernames = list(passwords.keys())
+
+            if selection >= 1 and selection <= len(usernames):
+                username = usernames[selection - 1]
+                encrypted_password = passwords[username]
+                try:
+                    decrypted_password = Fernet(key).decrypt(
+                        encrypted_password.encode()).decode()
+                    guiprint(
+                        f"Current password for {username}: {decrypted_password}")
+
+                    new_password = waitfornormalstring(
+                        "Enter the new password: ")
+                    encrypted_password = Fernet(key).encrypt(
+                        new_password.encode()).decode()
+                    passwords[username] = encrypted_password
+                    encrypted_passwords["passwords"] = passwords
+                    save_encrypted_data(encrypted_passwords, filename, key)
+                    guiprint("Password modified successfully!")
+                except:
+                    guiprint("Incorrect master password. Cannot modify password.")
+            else:
+                guiprint("Invalid selection.")
+
+        elif choice == 4:
+            if not passwords:
+                messagebox.showinfo("Password Manager", "No passwords saved.")
+                continue
+
+            guiprint("Saved Usernames/Emails:")
+            for idx, username in enumerate(passwords, start=1):
+                guiprint(f"{idx}. {username}")
+            guiprint("Enter the number of the username/email to delete password: ")
+            selection = waitforint()
+            usernames = list(passwords.keys())
+
+            if selection >= 1 and selection <= len(usernames):
+                username = usernames[selection - 1]
+                del passwords[username]
+                encrypted_passwords["passwords"] = passwords
+                save_encrypted_data(encrypted_passwords, filename, key)
+                guiprint("Password deleted successfully!")
+            else:
+                guiprint("Invalid selection.")
+
+        elif choice == 5:
             break
 
         else:
-            log_error("enteted wrong number",
-                      "Invalid choice. Please try again.")
+            log_error("failed input", "Invalid choice. Please try again.")
+            return startagain()
 
 
 def generate_fernet_key(passphrase):
