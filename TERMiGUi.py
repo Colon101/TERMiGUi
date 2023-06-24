@@ -14,9 +14,96 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import random
 from re import match
 import bitlyshortener
-
+import json
 disablebackgroundmusic = True
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
+
+
+def save_encrypted_data(data, filename, key):
+    f = Fernet(key)
+    encrypted_data = f.encrypt(json.dumps(data).encode())
+    with open(filename, "wb") as file:
+        file.write(encrypted_data)
+
+
+def load_encrypted_data(filename, key):
+    try:
+        with open(filename, "rb") as file:
+            encrypted_data = file.read()
+            f = Fernet(key)
+            decrypted_data = f.decrypt(encrypted_data)
+            return json.loads(decrypted_data)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+    except Exception as e:
+        log_error(e, "Wrong Password")
+        trytoexit()
+
+
+def password_manager():
+    guiprint("Enter your master password: ")
+    master_password = waitfornormalstring(hide="yes")
+    key = generate_fernet_key(master_password)
+
+    filename = "passwords.json"
+    encrypted_passwords = load_encrypted_data(filename, key)
+    passwords = {}
+
+    if "passwords" in encrypted_passwords:
+        passwords = encrypted_passwords["passwords"]
+
+    while True:
+        guiprint("\nPassword Manager Menu:")
+        guiprint("1. Add Password")
+        guiprint("2. Retrieve Password")
+        guiprint("3. Exit")
+        guiprint("Enter your choice (1-3): ")
+        choice = waitforint()
+        if choice == 1:
+            guiprint("Enter the username/email: ")
+            username = waitfornormalstring()
+            guiprint("Enter the password: ")
+            password = waitfornormalstring()
+
+            encrypted_password = Fernet(key).encrypt(
+                password.encode()).decode()
+
+            passwords[username] = encrypted_password
+            encrypted_passwords["passwords"] = passwords
+            save_encrypted_data(encrypted_passwords, filename, key)
+            guiprint("Password saved successfully!")
+
+        elif choice == 2:
+            if not passwords:
+                guiprint("No passwords saved.")
+                continue
+
+            guiprint("Saved Usernames/Emails:")
+            for idx, username in enumerate(passwords, start=1):
+                guiprint(f"{idx}. {username}")
+            guiprint("Enter the number of the username/email:")
+            selection = waitforint()
+            usernames = list(passwords.keys())
+
+            if selection >= 1 and selection <= len(usernames):
+                username = usernames[selection - 1]
+                encrypted_password = passwords[username]
+                try:
+                    decrypted_password = Fernet(key).decrypt(
+                        encrypted_password.encode()).decode()
+                    guiprint(f"Retrieved password: {decrypted_password}")
+                except:
+                    guiprint(
+                        "Incorrect master password. Cannot retrieve password.")
+            else:
+                guiprint("Invalid selection.")
+
+        elif choice == 3:
+            break
+
+        else:
+            log_error("enteted wrong number",
+                      "Invalid choice. Please try again.")
 
 
 def generate_fernet_key(passphrase):
@@ -653,7 +740,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter")
+    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter\n8. Password Manager")
     selection = waitforint()
     clearterminal()
     if selection == 1:
@@ -744,12 +831,13 @@ def execution():
             guiprint("Select a file")
             file = decrypt(usrinputpassword)
             guiprint(f"Successfully Decrypted To\n{file}")
-
+    elif selection == 8:
+        password_manager()
     elif selection == 1987:
         bgmusic()
     else:
         log_error(
-            ValueError(f"Selected wrong number {selection}"), "Select a number between 1-6")
+            ValueError(f"Selected wrong number {selection}"), "Select a number between 1-8")
         clearterminal()
         return execution()
 
