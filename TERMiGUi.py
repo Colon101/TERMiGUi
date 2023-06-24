@@ -19,6 +19,12 @@ disablebackgroundmusic = True
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 
+def returntoexecution():
+    clearterminal()
+    execution()
+    return -1
+
+
 def save_encrypted_data(data, filename, key):
     f = Fernet(key)
     encrypted_data = f.encrypt(json.dumps(data).encode())
@@ -37,7 +43,7 @@ def load_encrypted_data(filename, key):
         return {}
     except Exception as e:
         log_error(e, "Wrong Password")
-        trytoexit()
+        return returntoexecution()
 
 
 def password_manager():
@@ -150,8 +156,7 @@ def decrypt(passphrase):
             return os.path.basename(filename[:-9])
         except:
             log_error("Failed Passwd", "Wrong Password")
-            clearterminal()
-            return execution()
+            return returntoexecution()
     except FileNotFoundError as e:
         log_error(e, "Please select a file")
         return decrypt(passphrase)
@@ -168,8 +173,7 @@ def shorten(string):
         return shortener.shorten_urls([string])[0]
     except bitlyshortener.exc.RequestError as e:
         log_error(e, "Please Provide a Valid URL")
-        clearterminal()
-        return execution()
+        return returntoexecution()
 
 
 def calculate_crack_time(password, crack_speed=20000000000):
@@ -206,8 +210,7 @@ def calculate_crack_time(password, crack_speed=20000000000):
         cracked = ((entropy ** pass_len) / crack_speed)
     except:
         log_error("Too high float calc", "Please Enter a smaller numer")
-        clearterminal()
-        return "Error"
+        return returntoexecution()
     # if statements to have a more readable format
     time_ = "seconds"
     if cracked > 3600:
@@ -401,28 +404,6 @@ def loading_screen(duration, isforpass=1):
 # maybe run with disablebackgroundmusic = False?
 
 
-def bgmusic():
-    global disablebackgroundmusic
-    if disablebackgroundmusic:
-        clearterminal()
-        return execution()
-    truepath = get_resource_path("bg.png")
-    pygame.init()
-    screen_info = pygame.display.Info()
-    screen = pygame.display.set_mode(
-        (screen_info.current_w, screen_info.current_h), pygame.FULLSCREEN)
-    image = pygame.image.load(truepath)
-    image = pygame.transform.scale(
-        image, (screen_info.current_w, screen_info.current_h))
-    screen.blit(image, (0, 0))
-    pygame.display.flip()
-    play("backgroundmusic.mp3", 3)
-    pygame.time.delay(1)
-    # os.system("shutdown /s /t 0")
-    pygame.quit()
-    trytoexit()
-
-
 def get_resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -495,8 +476,7 @@ def play_hangman():
     if attempts != None:
         guiprint(f"tries = {attempts}")
     else:
-        clearterminal()
-        return execution()
+        return returntoexecution()
     global isexecuting
     guiprint("Welcome to Hangman!")
     guiprint("_ " * len(word))
@@ -527,9 +507,7 @@ def play_hangman():
                 guiprint("You lost!")
                 guiprint(f"The word was: {word}")
                 isexecuting = False
-                bgmusic()
-                clearterminal()
-                return execution()
+                break
 
         display_word = ""
         for char in word:
@@ -545,7 +523,7 @@ def play_hangman():
             guiprint("Congratulations! You won!")
             isexecuting = False
             cheer()
-            return execution()
+            break
 
 
 def log_error(exception, disp=None):
@@ -777,7 +755,7 @@ def execution():
                     cheer()
                     break
             else:
-                bgmusic()
+                guiprint(f"Failed! the number was: {guessthis}")
                 isexecuting = False
                 break
     elif selection == 3:
@@ -833,13 +811,10 @@ def execution():
             guiprint(f"Successfully Decrypted To\n{file}")
     elif selection == 8:
         password_manager()
-    elif selection == 1987:
-        bgmusic()
     else:
         log_error(
             ValueError(f"Selected wrong number {selection}"), "Select a number between 1-8")
-        clearterminal()
-        return execution()
+        return returntoexecution()
 
 
 window = Tk()
