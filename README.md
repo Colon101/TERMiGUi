@@ -23,6 +23,8 @@ if for some reason you're using this you should stop and learn tkinter library i
 `loading_screen(TimeInSeconds)` - will present a loading screen lasting seconds inserted to put in the background while your program is booting and can be a nice feature for loading massive files
 
 `startagain()` - asks the user if to start execution again or exit the program
+
+`password_manager()` a fully fledged password manager (you need to delete passwords.json to make it work)
 # Tutorial to compile on your own the example
 
 1. click on code then download as a zip or git clone this repository
