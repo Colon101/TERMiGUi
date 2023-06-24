@@ -18,10 +18,17 @@ import json
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 
-def returntoexecution():
-    clearterminal()
-    execution()
-    return -1
+def startagain():
+    global isexecuting
+    guiprint("Would you like to start again?\n[Y\\n]")
+    answer = waitforstring()
+    if answer == "" or answer == "y" or answer == "yes":
+        clearterminal()
+        isexecuting = True
+        return execution()
+    elif answer == "no" or answer == "n":
+        isexecuting = False
+        trytoexit()
 
 
 def save_encrypted_data(data, filename, key):
@@ -42,7 +49,7 @@ def load_encrypted_data(filename, key):
         return {}
     except Exception as e:
         log_error(e, "Wrong Password")
-        return returntoexecution()
+        return startagain()
 
 
 def password_manager():
@@ -155,7 +162,7 @@ def decrypt(passphrase):
             return os.path.basename(filename[:-9])
         except:
             log_error("Failed Passwd", "Wrong Password")
-            return returntoexecution()
+            return startagain()
     except FileNotFoundError as e:
         log_error(e, "Please select a file")
         return decrypt(passphrase)
@@ -172,7 +179,7 @@ def shorten(string):
         return shortener.shorten_urls([string])[0]
     except bitlyshortener.exc.RequestError as e:
         log_error(e, "Please Provide a Valid URL")
-        return returntoexecution()
+        return startagain()
 
 
 def calculate_crack_time(password, crack_speed=20000000000):
@@ -209,7 +216,7 @@ def calculate_crack_time(password, crack_speed=20000000000):
         cracked = ((entropy ** pass_len) / crack_speed)
     except:
         log_error("Too high float calc", "Please Enter a smaller numer")
-        return returntoexecution()
+        return startagain()
     # if statements to have a more readable format
     time_ = "seconds"
     if cracked > 3600:
@@ -475,7 +482,7 @@ def play_hangman():
     if attempts != None:
         guiprint(f"tries = {attempts}")
     else:
-        return returntoexecution()
+        return startagain()
     global isexecuting
     guiprint("Welcome to Hangman!")
     guiprint("_ " * len(word))
@@ -728,7 +735,7 @@ def execution():
             f"Welcome to the guess game enter a number(1-100) \nand we'll tell you if its higher or lower!")
         guiprint("Select Difficulty (1 = hard,2 = medium,3 = easy)")
         selectdiff = waitforint()
-        tries = (selectdiff * 3 + 3) if 1 <= selectdiff <= 3 else log_error(
+        tries = (selectdiff * 2 + 3) if 1 <= selectdiff <= 3 else log_error(
             "DifficultyError", "entered wrong number try again")
         if tries != None:
             guiprint(f"tries = {tries}")
@@ -813,7 +820,8 @@ def execution():
     else:
         log_error(
             ValueError(f"Selected wrong number {selection}"), "Select a number between 1-8")
-        return returntoexecution()
+        clearterminal()
+        return execution()
 
 
 window = Tk()
