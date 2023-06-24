@@ -129,7 +129,7 @@ def password_manager():
             for idx, username in enumerate(passwords, start=1):
                 guiprint(f"{idx}. {username}")
             guiprint(
-                "Enter the number of the username/email to retrieve password: ")
+                "Enter the number of the username to retrieve password: ")
             selection = waitforint()
             usernames = list(passwords.keys())
 
@@ -154,7 +154,7 @@ def password_manager():
             guiprint("Saved Usernames/Emails:")
             for idx, username in enumerate(passwords, start=1):
                 guiprint(f"{idx}. {username}")
-            guiprint("Enter the number of the username/email to modify password: ")
+            guiprint("Enter the number of the username to modify password: ")
             selection = waitforint()
             usernames = list(passwords.keys())
 
@@ -187,7 +187,7 @@ def password_manager():
             guiprint("Saved Usernames/Emails:")
             for idx, username in enumerate(passwords, start=1):
                 guiprint(f"{idx}. {username}")
-            guiprint("Enter the number of the username/email to delete password: ")
+            guiprint("Enter the number of the username to delete password: ")
             selection = waitforint()
             usernames = list(passwords.keys())
 
