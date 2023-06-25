@@ -16,7 +16,85 @@ import random
 from re import match
 import bitlyshortener
 import json
+import enchant
+from gtts import gTTS
+dictionary = enchant.Dict("en_US")
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
+
+
+def yesorno(message, sideup="y"):
+    sideup = sideup.lower()
+
+    if sideup == "yes" or sideup == "y":
+        guiprint(f'{message} [Y\\n]')
+        answ = waitforstring()
+
+        if answ == 'yes' or answ == 'y' or answ == '':
+            return True
+        elif answ == 'no' or answ == 'n':
+            return False
+        else:
+            messagebox.showwarning("Yes/No", "Please enter a correct option")
+            clearterminal()
+            return yesorno(message, sideup)
+
+    elif sideup == "no" or sideup == "n":
+        guiprint(f'{message}\n[y\\N]')
+        answ = waitforstring()
+
+        if answ == 'yes' or answ == 'y':
+            return True
+        elif answ == 'no' or answ == 'n' or answ == '':
+            return False
+        else:
+            messagebox.showwarning("Yes/No", "Please enter a correct option")
+            clearterminal()
+            return yesorno(message, sideup)
+
+
+def spell_check(word):
+    if dictionary.check(word):
+        return f'Correct! The word "{word}" is spelled correctly.'
+    else:
+        suggestions = dictionary.suggest(word)
+        if suggestions:
+            return f'Incorrect! The correct way to spell "{word}" is \n"{suggestions[0]}"'
+        else:
+            return f'No suggestions found for the word "{word}".'
+
+
+def playtts(text):
+    tts = gTTS(text=text, lang='en')
+    tts.save(get_resource_path("audiofile.mp3"))
+    play(get_resource_path("audiofile.mp3"))
+    os.remove(get_resource_path("audiofile.mp3"))
+
+
+def play_spellgame():
+    guiprint("Whats your guess")
+    words = []
+    with open(get_resource_path('spellgame.txt'), 'r') as file:
+        for line in file:
+            words.append(line.strip())
+    word = random.choice(words)
+    word = word.lower()
+    playtts(word)
+    usrguess = waitforstring()
+    if word == usrguess:
+        guiprint("congrats you got it right!")
+        playtts("congrats you got it right!")
+    else:
+        guiprint("you failed")
+        playtts("you failed")
+        guiprint(f'Correct spelling:\n{word}')
+        playtts(f'Correct spelling:\n{word}')
+    guiprint("Play again?")
+    playtts("Play again?")
+    again = yesorno("")
+    if again:
+        return play_spellgame()
+    else:
+        return -1
 
 
 def startagain():
@@ -735,10 +813,10 @@ def waitfornormalstring(hide=0):
         userinputentry.config(show="*")
         reveal = Button(window, text='Reveal', command=lambda: userinputentry.config(show=""), font=('Arial', 16), bg="#555", fg="#fff",
                         activebackground="#555", activeforeground="#fff")
-        reveal.place(x=400, y=350)
+        reveal.place(x=400, y=370)
         hideagain = Button(window, text="Hide", comman=lambda: userinputentry.config(show="*"), font=('Arial', 16), bg="#555", fg="#fff",
                            activebackground="#555", activeforeground="#fff")
-        hideagain.place(x=40, y=350)
+        hideagain.place(x=40, y=370)
 
     while y == 0:
         window.update()
@@ -816,7 +894,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter\n8. Password Manager")
+    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter\n8. Password Manager\n9. Spell Checker\n10. Spell challenge")
     selection = waitforint()
     clearterminal()
     if selection == 1:
@@ -909,6 +987,18 @@ def execution():
             guiprint(f"Successfully Decrypted To\n{file}")
     elif selection == 8:
         password_manager()
+    elif selection == 9:
+        usrinput = None
+        guiprint("Please enter a number to check or say exit to exit")
+        while True:
+            usrinput = waitfornormalstring()
+            if usrinput == "break":
+                return startagain()
+            else:
+                guiprint(spell_check(usrinput))
+    elif selection == 10:
+        play_spellgame()
+
     else:
         log_error(
             ValueError(f"Selected wrong number {selection}"), "Select a number between 1-8")
@@ -928,7 +1018,7 @@ execute = Button(window, text="Execute Code", command=dontrunagain, font=(
     "Arial", 16), bg="#555", fg="#fff", activebackground="#555", activeforeground="#fff")
 execute.pack(pady=20)
 
-text_field = Text(window, height=10, font=("Arial", 14),
+text_field = Text(window, height=11, font=("Arial", 14),
                   bg="#333", fg="#fff", state=DISABLED)
 text_field.pack(pady=20)
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
