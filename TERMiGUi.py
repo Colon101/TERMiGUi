@@ -20,6 +20,7 @@ import enchant
 from gtts import gTTS
 from nltk.corpus import wordnet
 import nltk
+from mutagen.mp3 import MP3
 dictionary = enchant.Dict("en_US")
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
@@ -81,16 +82,19 @@ def spell_check(word):
 def playtts(text):
     tts = gTTS(text=text, lang='en')
     tts.save(get_resource_path("audiofile.mp3"))
-    play(get_resource_path("audiofile.mp3"))
+    play(get_resource_path("audiofile.mp3"), duration=round(
+        MP3(get_resource_path("audiofile.mp3")).info.length, 1))
     os.remove(get_resource_path("audiofile.mp3"))
+    return -1
 
 
-def play_spellgame():
+def play_spellgame(score=0):
     guiprint("Whats your guess")
     words = []
     with open(get_resource_path('spellgame.txt'), 'r') as file:
         for line in file:
             words.append(line.strip())
+    words = list(set(words))
     word = random.choice(words)
     word = word.lower()
     playtts(word)
@@ -100,18 +104,21 @@ def play_spellgame():
     if word == usrguess:
         guiprint("congrats you got it right!")
         playtts("congrats you got it right!")
+        guiprint(f"score {score}")
+        score += 1
+        play_spellgame(score)
     else:
         guiprint("you failed")
         playtts("you failed")
         guiprint(f'Correct spelling:\n{word}')
         playtts(f'Correct spelling:\n{word}')
-    guiprint("Play again?")
-    playtts("Play again?")
-    again = yesorno("")
+        guiprint(f"score: {score}")
+        playtts(f"You've reached a score of {score}")
+    again = yesorno("play again?")
     if again:
-        return play_spellgame()
+        play_spellgame()
     else:
-        return -1
+        return execution()
 
 
 def startagain():
@@ -627,9 +634,13 @@ def play(path, duration=5):
 
 
 def trytoexit():
-    import os
     print('exiting')
     window.destroy()
+    pygame.quit()
+    try:
+        os.remove(get_resource_path("audiofile.mp3"))
+    except FileNotFoundError:
+        os._exit(0)
     os._exit(0)
 
 
@@ -911,7 +922,7 @@ def restart():
 
 def execution():
     global text_field, isexecuting
-    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter\n8. Password Manager\n9. Spell Checker\n10. Spell challenge")
+    guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter\n8. Password Manager\n9. Spell Checker\n10. Spelling Bee")
     selection = waitforint()
     clearterminal()
     if selection == 1:
@@ -1030,12 +1041,11 @@ window.title("TERMiGUi")
 window.update()
 loading_screen(4.2069)
 window.configure(bg="#222")
-
 execute = Button(window, text="Execute Code", command=dontrunagain, font=(
     "Arial", 16), bg="#555", fg="#fff", activebackground="#555", activeforeground="#fff")
 execute.pack(pady=20)
 
-text_field = Text(window, height=11, width=40, font=("Arial", 14),
+text_field = Text(window, height=11, width=44, font=("Arial", 14),
                   bg="#333", fg="#fff", state=DISABLED)
 text_field.pack(pady=20)
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
