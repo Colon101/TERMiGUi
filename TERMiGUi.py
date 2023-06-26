@@ -2,7 +2,6 @@ from __future__ import division
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog as fd
-import requests
 import os
 import sys
 import logging
@@ -21,6 +20,8 @@ from gtts import gTTS
 from nltk.corpus import wordnet
 import nltk
 from mutagen.mp3 import MP3
+import sounddevice as sd
+import soundfile as sf
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 nltk.download("wordnet")
@@ -98,12 +99,13 @@ def play_spellgame(score=0):
     playtts(word)
     guiprint(f"Definition: \n{getdefinition(word)}")
     playtts(f"Definition: \n{getdefinition(word)}")
+    playtts(word)
     usrguess = waitforstring()
     if word == usrguess:
         guiprint("congrats you got it right!")
         playtts("congrats you got it right!")
-        guiprint(f"score {score}")
         score += 1
+        guiprint(f"score {score}")
         play_spellgame(score)
     else:
         guiprint("you failed")
@@ -619,15 +621,13 @@ def cheer():
 
 def play(path, duration=5):
     truepath = get_resource_path(path)
-    pygame.mixer.init()
-    pygame.mixer.music.load(truepath)
-    pygame.mixer.music.play()
+    data, fs = sf.read(truepath, dtype='float32')
+    sd.play(data, fs)
     start_time = time.time()
-    while pygame.mixer.music.get_busy() and time.time() - start_time < duration:
-        window.update()
+    while sd.get_stream().active and time.time() - start_time < duration:
         time.sleep(1/144)
-    pygame.mixer.music.stop()
-    pygame.mixer.quit()
+        window.update()
+    sd.stop()
     return -1
 
 
