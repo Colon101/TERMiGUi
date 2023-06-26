@@ -16,12 +16,11 @@ import random
 from re import match
 import bitlyshortener
 import json
-import enchant
+from spellchecker import SpellChecker
 from gtts import gTTS
 from nltk.corpus import wordnet
 import nltk
 from mutagen.mp3 import MP3
-dictionary = enchant.Dict("en_US")
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 nltk.download("wordnet")
@@ -69,14 +68,13 @@ def yesorno(message, sideup="y"):
 
 
 def spell_check(word):
-    if dictionary.check(word):
+    spell = SpellChecker()
+
+    if spell.correction(word) == word:
         return f'Correct! The word "{word}" is spelled correctly.'
     else:
-        suggestions = dictionary.suggest(word)
-        if suggestions:
-            return f'Incorrect! The correct way to spell "{word}" is \n"{suggestions[0]}"'
-        else:
-            return f'No suggestions found for the word "{word}".'
+        suggestion = spell.correction(word)
+        return f'Incorrect! The correct way to spell "{word}" is "{suggestion}"'
 
 
 def playtts(text):
