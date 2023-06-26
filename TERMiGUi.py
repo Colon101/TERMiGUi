@@ -18,8 +18,23 @@ import bitlyshortener
 import json
 import enchant
 from gtts import gTTS
+from nltk.corpus import wordnet
+import nltk
 dictionary = enchant.Dict("en_US")
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
+
+nltk.download("wordnet")
+
+
+def getdefinition(word):
+    synsets = wordnet.synsets(word)
+    if synsets:
+        # Consider only the first synset
+        synset = synsets[0]
+        definition = synset.definition()
+        return definition
+    else:
+        return "No definition found for the word."
 
 
 def yesorno(message, sideup="y"):
@@ -79,6 +94,8 @@ def play_spellgame():
     word = random.choice(words)
     word = word.lower()
     playtts(word)
+    guiprint(f"Definition: \n{getdefinition(word)}")
+    playtts(f"Definition: \n{getdefinition(word)}")
     usrguess = waitforstring()
     if word == usrguess:
         guiprint("congrats you got it right!")
@@ -1018,7 +1035,7 @@ execute = Button(window, text="Execute Code", command=dontrunagain, font=(
     "Arial", 16), bg="#555", fg="#fff", activebackground="#555", activeforeground="#fff")
 execute.pack(pady=20)
 
-text_field = Text(window, height=11, font=("Arial", 14),
+text_field = Text(window, height=11, width=40, font=("Arial", 14),
                   bg="#333", fg="#fff", state=DISABLED)
 text_field.pack(pady=20)
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
