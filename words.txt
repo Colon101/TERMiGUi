@@ -258,4 +258,3 @@ dime
 dice
 upper
 stock
-Waltuh

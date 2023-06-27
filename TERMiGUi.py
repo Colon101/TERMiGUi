@@ -96,30 +96,56 @@ def play_spellgame(score=0):
     words = list(set(words))
     word = random.choice(words)
     word = word.lower()
-    playtts(word)
-    guiprint(
-        f"Definition: \n{getdefinition(word).replace(word,'*' * 5)}")
-    playtts(f"Definition: \n{getdefinition(word)}")
-    playtts(word)
-    usrguess = waitforstring()
-    if word == usrguess:
-        guiprint("congrats you got it right!")
-        playtts("congrats you got it right!")
-        score += 1
-        guiprint(f"score {score}")
-        play_spellgame(score)
+    if word != "waltuh":
+        playtts(word)
+        guiprint(
+            f"Definition: \n{getdefinition(word).replace(word,'*' * 5)}")
+        playtts(f"Definition: \n{getdefinition(word)}")
+        playtts(word)
+        usrguess = waitforstring()
+        if word == usrguess:
+            guiprint("congrats you got it right!")
+            playtts("congrats you got it right!")
+            score += 1
+            guiprint(f"score {score}")
+            play_spellgame(score)
+        else:
+            guiprint("you failed")
+            playtts("you failed")
+            guiprint(f'Correct spelling:\n{word}')
+            playtts(f'Correct spelling:\n{word}')
+            guiprint(f"score: {score}")
+            playtts(f"You've reached a score of {score}")
+        again = yesorno("play again?")
+        if again:
+            play_spellgame()
+        else:
+            return execution()
     else:
-        guiprint("you failed")
-        playtts("you failed")
-        guiprint(f'Correct spelling:\n{word}')
-        playtts(f'Correct spelling:\n{word}')
-        guiprint(f"score: {score}")
-        playtts(f"You've reached a score of {score}")
-    again = yesorno("play again?")
-    if again:
-        play_spellgame()
-    else:
-        return execution()
+        play(get_resource_path("Waltuh.mp3"), 2)
+        guiprint(
+            "Definition:\nWaltuh Waltuh Waltuh Waltuh Waltuh Waltuh Waltuh Waltuh Waltuh Waltuh Waltuh Waltuh ")
+        playtts("Definition")
+        play("Waltuh.mp3", round(
+            MP3(get_resource_path("Waltuh.mp3")).info.length, 1))
+        if word == usrguess:
+            guiprint("congrats you got it right!")
+            playtts("congrats you got it right!")
+            score += 1
+            guiprint(f"score {score}")
+            play_spellgame(score)
+        else:
+            guiprint("you failed")
+            playtts("you failed")
+            guiprint(f'Correct spelling:\n{word}')
+            playtts(f'Correct spelling:\n{word}')
+            guiprint(f"score: {score}")
+            playtts(f"You've reached a score of {score}")
+        again = yesorno("play again?")
+        if again:
+            play_spellgame()
+        else:
+            return execution()
 
 
 def startagain():
