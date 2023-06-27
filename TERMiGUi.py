@@ -1057,7 +1057,7 @@ def execution():
         password_manager()
     elif selection == 9:
         usrinput = None
-        guiprint("Please enter a number to check or say exit to exit")
+        guiprint("Please enter a word to check for spelling mistakes \nor say exit to exit")
         while True:
             usrinput = waitfornormalstring()
             if usrinput == "break":
