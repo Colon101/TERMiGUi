@@ -97,7 +97,8 @@ def play_spellgame(score=0):
     word = random.choice(words)
     word = word.lower()
     playtts(word)
-    guiprint(f"Definition: \n{getdefinition(word)}")
+    guiprint(
+        f"Definition: \n{getdefinition(word).replace(word,'*' * 5)}")
     playtts(f"Definition: \n{getdefinition(word)}")
     playtts(word)
     usrguess = waitforstring()
