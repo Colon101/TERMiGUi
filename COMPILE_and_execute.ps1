@@ -17,7 +17,7 @@ pip install -r requirements.txt
 $sourceFile = "TERMiGUi.py"
 $outputName = "code.exe"
 
-pyinstaller --onefile --windowed --add-data "cheer.mp3;." --add-data "words.txt;." --add-data "code.png;." --add-data ".apikey.txt;." --add-data "spellgame.txt;." --add-data "Waltuh.mp3;." --hidden-import pygame --icon code.ico --name $outputName $sourceFile
+pyinstaller --onefile --windowed --add-data "cheer.mp3;." --add-data "words.txt;." --add-data "code.png;." --add-data ".apikey.txt;." --add-data "spellgame.txt;." --add-data "Waltuh.mp3;." --hidden-import pygame  --hidden-import spellchecker --icon code.ico --name $outputName $sourceFile
 
 # Remove spec file
 Remove-Item -Path "$outputName.spec"

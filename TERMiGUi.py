@@ -69,13 +69,28 @@ def yesorno(message, sideup="y"):
 
 
 def spell_check(word):
-    spell = SpellChecker()
+    try:
+        spell = SpellChecker()
 
-    if spell.correction(word) == word:
-        return f'Correct! The word "{word}" is spelled correctly.'
-    else:
-        suggestion = spell.correction(word)
-        return f'Incorrect! The correct way to spell "{word}" is "{suggestion}"'
+        if spell.correction(word) == word:
+            return f'Correct! The word "{word}" is spelled correctly.'
+        else:
+            suggestion = spell.correction(word)
+            return f'Incorrect! The correct way to spell "{word}" is \n"{suggestion}"'
+    except Exception:
+        try:
+            import enchant
+            # Create a SpellChecker object for US English
+            spell = enchant.Dict("en_US")
+
+            if spell.check(word):
+                return f'Correct! The word "{word}" is spelled correctly.'
+            else:
+                # Get the first suggestion for the correct spelling
+                suggestion = spell.suggest(word)[0]
+                return f'Incorrect! The correct way to spell "{word}" is \n"{suggestion}"'
+        except Exception:
+            return "Something went wrong"
 
 
 def playtts(text):
