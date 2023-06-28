@@ -26,11 +26,113 @@ import threading
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 
+def loading_screen(duration, isforpass=1):
+    # init messages
+    messages = ["Fetching data",
+                "Processing variables",
+                "Final calculations",
+                "Booting database",
+                "Optimizing algorithms",
+                "Analyzing user preferences",
+                "Loading assets",
+                "Generating infrastructure",
+                "Initializing subsystems", "Hyper Compiling",
+                "Remaking Init System",
+                "Decrypting secure files",
+                "Quantum entangling data",
+                "Assembling virtual particles",
+                "Constructing neural pathways",
+                "Quantifying metaphysical concepts",
+                "Harmonizing quantum harmonics",
+                "Simulating alternate realities",
+                "Building a digital metropolis",
+                "Translating binary into emotions",
+                "Synthesizing cosmic vibrations",
+                "Unraveling the fabric of space-time",
+                "Engaging time dilation protocols",
+                "Unleashing the power of imagination",
+                "Converging parallel universes",
+                "Capturing ethereal fragments",
+                "Resolving quantum paradoxes",
+                "Transcending physical dimensions",
+                "Infusing code with cosmic energy",
+                "Augmenting reality with dreams",
+                "Initiating neural network connections",
+                "Compiling consciousness into data",
+                "Optimizing infinite possibilities",
+                "Unraveling the secrets of the universe",
+                "Defying logical limitations",
+                "Quantum teleporting data packets",
+                "Downloading NLTK WordNet",
+                "Initializing NLTK Dataset",
+                "Loading Dictionaries"]
+    if isforpass != 1:
+        # passwd messages
+        messages = ["Calculating Password",
+                    "Running Megahashes", "Checking Brute Force"]
+    progress = 0
+    next_message_time = 0
+    # starts pygame
+    pygame.init()
+    # loads icon
+    icon_image = pygame.image.load(get_resource_path("code.png"))
+    pygame.display.set_icon(icon_image)
+    # gets geomety
+    screen_width, screen_height = 400, 150
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption("Loading...")
+    clock = pygame.time.Clock()
+    # inits font
+    font = pygame.font.Font(None, 25)
+    loading_text = font.render(
+        "Loading... Fetching data", True, (255, 255, 255))
+    # vars for loading bar
+    progress_bar_width = 300
+    progress_bar_height = 20
+    progress_bar_x = (screen_width - progress_bar_width) // 2
+    progress_bar_y = screen_height // 2
+
+    loading_rect = loading_text.get_rect(
+        midleft=(progress_bar_x, progress_bar_y - 20))
+    # checks for pygame.QUIT and quits if so
+    while progress < duration:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                os._exit(1)
+
+        progress += 1 / 60
+        # gets random message
+        if pygame.time.get_ticks() > next_message_time:
+            randombullshit = random.choice(messages)
+            loading_text = font.render(randombullshit, True, (255, 255, 255))
+            next_message_time = pygame.time.get_ticks() + random.randint(50, 400)
+            pygame.display.set_caption(f"Loading... {randombullshit}")
+
+        screen.fill((66, 69, 73))  # bg color
+
+        screen.blit(loading_text, loading_rect)
+
+        pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y -
+                         2, progress_bar_width + 4, progress_bar_height + 4), 2)
+
+        progress_bar_fill_width = int(progress / duration * progress_bar_width)
+        pygame.draw.rect(screen, (0, 254, 252), (progress_bar_x,
+                         progress_bar_y, progress_bar_fill_width, progress_bar_height))
+
+        pygame.display.flip()
+        clock.tick(60)  # fps limit
+
+    pygame.quit()
+
+
 def run_loading_screen(duration, isforpass=1):
     # Create a new thread and run the loading_screen function
     loading_thread = threading.Thread(
         target=loading_screen, args=(duration, isforpass))
     loading_thread.start()
+
+
+run_loading_screen(4.2069)
 
 
 def getdefinition(word):
@@ -547,105 +649,6 @@ def safe_math(expression):
 # makes a temporary loading screen while running a calculation
 
 
-def loading_screen(duration, isforpass=1):
-    # init messages
-    messages = ["Fetching data",
-                "Processing variables",
-                "Final calculations",
-                "Booting database",
-                "Optimizing algorithms",
-                "Analyzing user preferences",
-                "Loading assets",
-                "Generating infrastructure",
-                "Initializing subsystems", "Hyper Compiling",
-                "Remaking Init System",
-                "Decrypting secure files",
-                "Quantum entangling data",
-                "Assembling virtual particles",
-                "Constructing neural pathways",
-                "Quantifying metaphysical concepts",
-                "Harmonizing quantum harmonics",
-                "Simulating alternate realities",
-                "Building a digital metropolis",
-                "Translating binary into emotions",
-                "Synthesizing cosmic vibrations",
-                "Unraveling the fabric of space-time",
-                "Engaging time dilation protocols",
-                "Unleashing the power of imagination",
-                "Converging parallel universes",
-                "Capturing ethereal fragments",
-                "Resolving quantum paradoxes",
-                "Transcending physical dimensions",
-                "Infusing code with cosmic energy",
-                "Augmenting reality with dreams",
-                "Initiating neural network connections",
-                "Compiling consciousness into data",
-                "Optimizing infinite possibilities",
-                "Unraveling the secrets of the universe",
-                "Defying logical limitations",
-                "Quantum teleporting data packets",
-                "Downloading NLTK WordNet",
-                "Initializing NLTK Dataset",
-                "Loading Dictionaries"]
-    if isforpass != 1:
-        # passwd messages
-        messages = ["Calculating Password",
-                    "Running Megahashes", "Checking Brute Force"]
-    progress = 0
-    next_message_time = 0
-    # starts pygame
-    pygame.init()
-    # loads icon
-    icon_image = pygame.image.load(get_resource_path("code.png"))
-    pygame.display.set_icon(icon_image)
-    # gets geomety
-    screen_width, screen_height = 400, 150
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Loading...")
-    clock = pygame.time.Clock()
-    # inits font
-    font = pygame.font.Font(None, 25)
-    loading_text = font.render(
-        "Loading... Fetching data", True, (255, 255, 255))
-    # vars for loading bar
-    progress_bar_width = 300
-    progress_bar_height = 20
-    progress_bar_x = (screen_width - progress_bar_width) // 2
-    progress_bar_y = screen_height // 2
-
-    loading_rect = loading_text.get_rect(
-        midleft=(progress_bar_x, progress_bar_y - 20))
-    # checks for pygame.QUIT and quits if so
-    while progress < duration:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                os._exit(1)
-
-        progress += 1 / 60
-        # gets random message
-        if pygame.time.get_ticks() > next_message_time:
-            randombullshit = random.choice(messages)
-            loading_text = font.render(randombullshit, True, (255, 255, 255))
-            next_message_time = pygame.time.get_ticks() + random.randint(50, 400)
-            pygame.display.set_caption(f"Loading... {randombullshit}")
-
-        screen.fill((66, 69, 73))  # bg color
-
-        screen.blit(loading_text, loading_rect)
-
-        pygame.draw.rect(screen, (0, 0, 0), (progress_bar_x - 2, progress_bar_y -
-                         2, progress_bar_width + 4, progress_bar_height + 4), 2)
-
-        progress_bar_fill_width = int(progress / duration * progress_bar_width)
-        pygame.draw.rect(screen, (0, 254, 252), (progress_bar_x,
-                         progress_bar_y, progress_bar_fill_width, progress_bar_height))
-
-        pygame.display.flip()
-        clock.tick(60)  # fps limit
-
-    pygame.quit()
-
-
 def get_resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -1068,7 +1071,6 @@ window.geometry("500x500+700+250")
 window.resizable(False, False)
 window.title("TERMiGUi")
 window.update()
-run_loading_screen(4.2069)
 nltk.download("wordnet")
 window.configure(bg="#222")
 execute = Button(window, text="Execute Code", command=dontrunagain, font=(
