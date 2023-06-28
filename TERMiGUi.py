@@ -22,9 +22,15 @@ import nltk
 from mutagen.mp3 import MP3
 import sounddevice as sd
 import soundfile as sf
+import threading
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
-nltk.download("wordnet")
+
+def run_loading_screen(duration, isforpass=1):
+    # Create a new thread and run the loading_screen function
+    loading_thread = threading.Thread(
+        target=loading_screen, args=(duration, isforpass))
+    loading_thread.start()
 
 
 def getdefinition(word):
@@ -577,7 +583,10 @@ def loading_screen(duration, isforpass=1):
                 "Optimizing infinite possibilities",
                 "Unraveling the secrets of the universe",
                 "Defying logical limitations",
-                "Quantum teleporting data packets"]
+                "Quantum teleporting data packets",
+                "Downloading NLTK WordNet",
+                "Initializing NLTK Dataset",
+                "Loading Dictionaries"]
     if isforpass != 1:
         # passwd messages
         messages = ["Calculating Password",
@@ -610,14 +619,7 @@ def loading_screen(duration, isforpass=1):
     while progress < duration:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                trytoexit()
-                pygame.quit()
-                return
-            # loading shortcut
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s and pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                    pygame.quit()
-                    return
+                os._exit(1)
 
         progress += 1 / 60
         # gets random message
@@ -642,8 +644,6 @@ def loading_screen(duration, isforpass=1):
         clock.tick(60)  # fps limit
 
     pygame.quit()
-
-# maybe run with disablebackgroundmusic = False?
 
 
 def get_resource_path(relative_path):
@@ -682,18 +682,6 @@ def trytoexit():
     except FileNotFoundError:
         os._exit(0)
     os._exit(0)
-
-
-try:
-    with open('errors.log', 'r') as file:
-        print('errors found! printing previous errors and deleting older file')
-        contents = file.read()
-        print(contents)
-
-    os.remove('errors.log')
-    print('==EOF==\nfrom now all errors happened really and you should get a GUI for it as well')
-except FileNotFoundError:
-    print("no previous errors found starting app now!")
 
 
 def IsListJustFloats(lst):
@@ -1057,7 +1045,8 @@ def execution():
         password_manager()
     elif selection == 9:
         usrinput = None
-        guiprint("Please enter a word to check for spelling mistakes \nor say exit to exit")
+        guiprint(
+            "Please enter a word to check for spelling mistakes \nor say exit to exit")
         while True:
             usrinput = waitfornormalstring()
             if usrinput == "break":
@@ -1079,21 +1068,40 @@ window.geometry("500x500+700+250")
 window.resizable(False, False)
 window.title("TERMiGUi")
 window.update()
-loading_screen(4.2069)
+run_loading_screen(4.2069)
+nltk.download("wordnet")
+time.sleep(2.5)
 window.configure(bg="#222")
 execute = Button(window, text="Execute Code", command=dontrunagain, font=(
     "Arial", 16), bg="#555", fg="#fff", activebackground="#555", activeforeground="#fff")
 execute.pack(pady=20)
-
+time.sleep(0.5)
+window.update()
 text_field = Text(window, height=11, width=44, font=("Arial", 14),
                   bg="#333", fg="#fff", state=DISABLED)
 text_field.pack(pady=20)
+time.sleep(0.5)
+window.update()
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
                        activebackground="#555", activeforeground="#fff")
 restartbutton.place(x=20, y=20)
+time.sleep(0.5)
+window.update()
 icon = get_resource_path("code.png")
 photo = PhotoImage(file=get_resource_path(icon))
 window.iconphoto(False, photo)
+time.sleep(0.2)
+window.update()
+try:
+    with open('errors.log', 'r') as file:
+        print('errors found! printing previous errors and deleting older file')
+        contents = file.read()
+        print(contents)
+
+    os.remove('errors.log')
+    print('==EOF==\nfrom now all errors happened really and you should get a GUI for it as well')
+except FileNotFoundError:
+    print("no previous errors found starting app now!")
 window.protocol("WM_DELETE_WINDOW", trytoexit)
 isexecuting = True
 execution()
