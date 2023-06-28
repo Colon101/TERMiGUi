@@ -1070,7 +1070,6 @@ window.title("TERMiGUi")
 window.update()
 run_loading_screen(4.2069)
 nltk.download("wordnet")
-time.sleep(2.5)
 window.configure(bg="#222")
 execute = Button(window, text="Execute Code", command=dontrunagain, font=(
     "Arial", 16), bg="#555", fg="#fff", activebackground="#555", activeforeground="#fff")
