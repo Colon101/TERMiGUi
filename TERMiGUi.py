@@ -1,32 +1,19 @@
 from __future__ import division
-from tkinter import *
-from tkinter import messagebox
-from tkinter import filedialog as fd
 import os
-import sys
-import logging
-import pygame
-import time
-import base64
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-import random
-from re import match
-import bitlyshortener
-import json
-from spellchecker import SpellChecker
-from gtts import gTTS
-from nltk.corpus import wordnet
-import nltk
-from mutagen.mp3 import MP3
-import sounddevice as sd
-import soundfile as sf
 import threading
-apikey = None  # insert bitly api key here or make inside of .apikey.txt
+import pygame
+import sys
+import random
+isalive =True
+def get_resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
 
-
+    return os.path.join(base_path, relative_path)
 def loading_screen(duration, isforpass=1):
+    global isalive
     # init messages
     messages = ["Fetching data",
                 "Processing variables",
@@ -121,7 +108,7 @@ def loading_screen(duration, isforpass=1):
 
         pygame.display.flip()
         clock.tick(60)  # fps limit
-
+    isalive = False
     pygame.quit()
 
 
@@ -133,6 +120,33 @@ def run_loading_screen(duration, isforpass=1):
 
 
 run_loading_screen(4.2069)
+import soundfile as sf
+import sounddevice as sd
+from mutagen.mp3 import MP3
+import nltk
+from nltk.corpus import wordnet
+from gtts import gTTS
+from spellchecker import SpellChecker
+import json
+import bitlyshortener
+from re import match
+import random
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+from cryptography.fernet import Fernet
+import base64
+import time
+import logging
+import sys
+
+from tkinter import filedialog as fd
+from tkinter import messagebox
+from tkinter import *
+window = Tk()
+
+
+
+apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
 
 def getdefinition(word):
@@ -649,13 +663,7 @@ def safe_math(expression):
 # makes a temporary loading screen while running a calculation
 
 
-def get_resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except AttributeError:
-        base_path = os.path.abspath(".")
 
-    return os.path.join(base_path, relative_path)
 
 
 def cheer():
@@ -952,6 +960,10 @@ def restart():
 
 
 def execution():
+    global isalive
+    if isalive == False:
+        print(isalive)
+        window.attributes("-topmost", True) 
     global text_field, isexecuting
     guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter\n8. Password Manager\n9. Spell Checker\n10. Spelling Bee")
     selection = waitforint()
@@ -1066,7 +1078,6 @@ def execution():
         return execution()
 
 
-window = Tk()
 window.geometry("500x500+700+250")
 window.resizable(False, False)
 window.title("TERMiGUi")
@@ -1104,6 +1115,8 @@ try:
 except FileNotFoundError:
     print("no previous errors found starting app now!")
 window.protocol("WM_DELETE_WINDOW", trytoexit)
+while isalive:
+    continue
 isexecuting = True
 execution()
 isexecuting = False
