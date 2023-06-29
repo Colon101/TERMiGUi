@@ -646,7 +646,9 @@ def calculate_crack_time(password, crack_speed=20000000000):
     # makes the user not confused if returns "0.00 seconds"
     if "{:.2f}".format(cracked) == "0.00":
         cracked = 0.01
+    window.attributes("-topmost", False) 
     loading_screen(2.5, isforpass=True)
+    window.attributes("-topmost", True) 
     return "Time to crack password: {:.2f} {}".format(cracked, time_)
 
 # makes eval more secure against bad actors
