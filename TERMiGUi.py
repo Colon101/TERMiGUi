@@ -1075,7 +1075,7 @@ def execution():
 
     else:
         log_error(
-            ValueError(f"Selected wrong number {selection}"), "Select a number between 1-8")
+            ValueError(f"Selected wrong number {selection}"), "Select a number between 1-10")
         clearterminal()
         return execution()
 
