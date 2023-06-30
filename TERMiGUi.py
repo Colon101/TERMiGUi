@@ -119,11 +119,12 @@ def run_loading_screen(duration, isforpass=1):
     loading_thread.start()
 
 
+import nltk
+nltk.download("wordnet")
 run_loading_screen(4.2069)
 import soundfile as sf
 import sounddevice as sd
 from mutagen.mp3 import MP3
-import nltk
 from nltk.corpus import wordnet
 from gtts import gTTS
 from spellchecker import SpellChecker
@@ -646,9 +647,7 @@ def calculate_crack_time(password, crack_speed=20000000000):
     # makes the user not confused if returns "0.00 seconds"
     if "{:.2f}".format(cracked) == "0.00":
         cracked = 0.01
-    window.attributes("-topmost", False) 
     loading_screen(2.5, isforpass=True)
-    window.attributes("-topmost", True) 
     return "Time to crack password: {:.2f} {}".format(cracked, time_)
 
 # makes eval more secure against bad actors
@@ -1075,7 +1074,7 @@ def execution():
 
     else:
         log_error(
-            ValueError(f"Selected wrong number {selection}"), "Select a number between 1-10")
+            ValueError(f"Selected wrong number {selection}"), "Select a number between 1-8")
         clearterminal()
         return execution()
 
@@ -1084,22 +1083,21 @@ window.geometry("500x500+700+250")
 window.resizable(False, False)
 window.title("TERMiGUi")
 window.update()
-nltk.download("wordnet")
 window.configure(bg="#222")
 execute = Button(window, text="Execute Code", command=dontrunagain, font=(
     "Arial", 16), bg="#555", fg="#fff", activebackground="#555", activeforeground="#fff")
 execute.pack(pady=20)
-time.sleep(0.5)
+time.sleep(0.2)
 window.update()
 text_field = Text(window, height=11, width=44, font=("Arial", 14),
                   bg="#333", fg="#fff", state=DISABLED)
 text_field.pack(pady=20)
-time.sleep(0.5)
+time.sleep(0.2)
 window.update()
 restartbutton = Button(window, text='Restart', command=restart, font=('Arial', 16), bg="#555", fg="#fff",
                        activebackground="#555", activeforeground="#fff")
 restartbutton.place(x=20, y=20)
-time.sleep(0.5)
+time.sleep(0.2)
 window.update()
 icon = get_resource_path("code.png")
 photo = PhotoImage(file=get_resource_path(icon))
