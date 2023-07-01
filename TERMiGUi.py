@@ -1,10 +1,32 @@
 from __future__ import division
+import requests
+from tkinter import *
+from tkinter import messagebox
+from tkinter import filedialog as fd
+import logging
+import time
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from re import match
+import bitlyshortener
+import json
+from spellchecker import SpellChecker
+from gtts import gTTS
+from nltk.corpus import wordnet
+from mutagen.mp3 import MP3
+import sounddevice as sd
+import soundfile as sf
+import nltk
 import os
 import threading
 import pygame
 import sys
 import random
-isalive =True
+isalive = True
+
+
 def get_resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -12,6 +34,8 @@ def get_resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+
 def loading_screen(duration, isforpass=1):
     global isalive
     # init messages
@@ -119,40 +143,17 @@ def run_loading_screen(duration, isforpass=1):
     loading_thread.start()
 
 
-import nltk
 nltk.download("wordnet")
 run_loading_screen(4.2069)
-import soundfile as sf
-import sounddevice as sd
-from mutagen.mp3 import MP3
-from nltk.corpus import wordnet
-from gtts import gTTS
-from spellchecker import SpellChecker
-import json
-import bitlyshortener
-from re import match
-import random
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.hazmat.primitives import hashes
-from cryptography.fernet import Fernet
-import base64
-import time
-import logging
-import sys
 
-from tkinter import filedialog as fd
-from tkinter import messagebox
-from tkinter import *
 window = Tk()
 
 
-import requests
-import json
-def leaderboardmanager(username,score):
+def leaderboardmanager(username, score):
     url = 'http://139.144.177.42:3000'
     data = {
-    'username': f'{username.lower()}',
-    'score': score
+        'username': f'{username.lower()}',
+        'score': score
     }
 
     headers = {'Content-Type': 'application/json'}
@@ -162,6 +163,7 @@ def leaderboardmanager(username,score):
         guiprint('Leaderboard updated successfully')
     else:
         guiprint('Failed to update leaderboard')
+
 
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
@@ -274,7 +276,7 @@ def play_spellgame(score=0):
         if uploadscore:
             guiprint("enter your username")
             username = waitforstring()
-            leaderboardmanager(username,score)
+            leaderboardmanager(username, score)
         again = yesorno("play again?")
         if again:
             play_spellgame()
@@ -685,9 +687,6 @@ def safe_math(expression):
 # makes a temporary loading screen while running a calculation
 
 
-
-
-
 def cheer():
 
     play("cheer.mp3")
@@ -985,7 +984,7 @@ def execution():
     global isalive
     if isalive == False:
         print(isalive)
-        window.attributes("-topmost", True) 
+        window.attributes("-topmost", True)
     global text_field, isexecuting
     guiprint(f"Select Example: \n1. Hangman \n2. Guess Game\n3. Calculator\n4. Password Generator\n5. Password Strength Test\n6. URL Shortner\n7. File Encrypt/Decrypter\n8. Password Manager\n9. Spell Checker\n10. Spelling Bee")
     selection = waitforint()
