@@ -20,6 +20,7 @@ conn.commit()
 cursor.close()
 conn.close()
 
+
 @app.route('/', methods=['POST'])
 def handle_post():
     req_data = request.get_json()
@@ -70,6 +71,7 @@ def handle_get():
         <html>
           <head>
             <title>Leaderboard</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
               body {{
                 background-color: #222;
@@ -90,9 +92,18 @@ def handle_get():
                 margin-bottom: 20px;
               }}
 
-              a {{
-                color: #fff;
+              a.button {{
+                display: inline-block;
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                text-align: center;
+                font-size: 20px;
+                padding: 10px;
+                width: 200px;
+                cursor: pointer;
                 text-decoration: none;
+                border-radius: 4px;
               }}
 
               table {{
@@ -118,11 +129,21 @@ def handle_get():
               td {{
                 background-color: #222;
               }}
+
+              @media screen and (max-width: 600px) {{
+                h1 {{
+                  font-size: 28px;
+                }}
+
+                table {{
+                  font-size: 18px;
+                }}
+              }}
             </style>
           </head>
           <body>
             <h1>Leaderboard</h1>
-            <p><a href="https://github.com/Colon101/TERMiGUi" target="_blank">Check out my program</a></p>
+            <p><a href="https://github.com/Colon101/TERMiGUi" target="_blank" class="button">Check out my program</a></p>
             <table>
               <tr>
                 <th>Rank</th>
@@ -135,10 +156,12 @@ def handle_get():
         </html>
     '''
 
+
     cursor.close()
     conn.close()
 
     return html
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=app_port, debug=True)
