@@ -146,6 +146,22 @@ from tkinter import *
 window = Tk()
 
 
+import requests
+import json
+def leaderboardmanager(username,score):
+    url = 'http://localhost:3000/leaderboard'
+    data = {
+    'username': f'{username.lower()}',
+    'score': score
+    }
+
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url, data=json.dumps(data), headers=headers)
+
+    if response.status_code == 200:
+        guiprint('Leaderboard updated successfully')
+    else:
+        guiprint('Failed to update leaderboard')
 
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
 
