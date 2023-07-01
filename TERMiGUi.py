@@ -150,19 +150,20 @@ window = Tk()
 
 
 def leaderboardmanager(username, score):
-    url = 'http://localhost:3000/'
+    url = 'https://termigui.tavernxkobold.xyz/'
     data = {
         'username': f'{username.lower()}',
         'score': score
     }
 
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, data=json.dumps(data), headers=headers)
+    response = requests.post(url, json=data, headers=headers)
 
     if response.status_code == 200:
-        guiprint('Leaderboard updated successfully')
+        print('Leaderboard updated successfully')
     else:
-        guiprint('Failed to update leaderboard')
+        print('Failed to update leaderboard')
+        print(response.status_code)
 
 
 apikey = None  # insert bitly api key here or make inside of .apikey.txt
