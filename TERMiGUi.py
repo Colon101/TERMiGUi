@@ -149,7 +149,7 @@ window = Tk()
 import requests
 import json
 def leaderboardmanager(username,score):
-    url = 'http://localhost:3000/leaderboard'
+    url = 'http://139.144.177.42:3000'
     data = {
     'username': f'{username.lower()}',
     'score': score
@@ -270,6 +270,11 @@ def play_spellgame(score=0):
             playtts(f'Correct spelling:\n{word}')
             guiprint(f"score: {score}")
             playtts(f"You've reached a score of {score}")
+        uploadscore = yesorno("Would you like to upload your score?")
+        if uploadscore:
+            guiprint("enter your username")
+            username = waitforstring()
+            leaderboardmanager(username,score)
         again = yesorno("play again?")
         if again:
             play_spellgame()
