@@ -145,7 +145,7 @@ def run_loading_screen(duration, isforpass=1):
 
 nltk.download("wordnet")
 run_loading_screen(4.2069)
-
+time.sleep(1)
 window = Tk()
 
 
