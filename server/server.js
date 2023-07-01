@@ -2,7 +2,8 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-const port = 3000;
+const httpPort = 80;
+const appPort = 3000;
 
 app.use(express.json());
 
@@ -16,7 +17,7 @@ db.run(`
   )
 `);
 
-app.post('/leaderboard', (req, res) => {
+app.post('/', (req, res) => {
     const { username, score } = req.body;
 
     if (!username || !score) {
@@ -57,7 +58,7 @@ app.post('/leaderboard', (req, res) => {
     });
 });
 
-app.get('/leaderboard', (req, res) => {
+app.get('/', (req, res) => {
     db.all('SELECT username, score FROM scores ORDER BY score DESC', (err, rows) => {
         if (err) {
             console.error(err);
@@ -120,6 +121,10 @@ app.get('/leaderboard', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.listen(appPort, () => {
+    console.log(`Server is running on port ${appPort}`);
+});
+
+app.listen(httpPort, '0.0.0.0', () => {
+    console.log(`HTTP server is running on port ${httpPort}`);
 });
