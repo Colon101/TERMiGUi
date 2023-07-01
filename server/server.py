@@ -3,7 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 http_port = 80
-app_port = 3000
+app_port = 80
 
 conn = sqlite3.connect('leaderboard.db')
 cursor = conn.cursor()
