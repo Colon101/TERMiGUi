@@ -150,7 +150,7 @@ window = Tk()
 
 
 def leaderboardmanager(username, score):
-    url = 'http://139.144.177.42:3000'
+    url = 'http://localhost:3000/'
     data = {
         'username': f'{username.lower()}',
         'score': score
