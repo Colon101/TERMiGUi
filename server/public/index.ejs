@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaderboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
+  <body>
+    <h1>Leaderboard</h1>
+    <p><a href="https://github.com/Colon101/TERMiGUi" target="_blank" class="button button-30">Check out my program</a></p>
+    <table>
+      <tr>
+        <th>Rank</th>
+        <th>Username</th>
+        <th>Score</th>
+      </tr>
+      <% leaderboard.forEach(function(row, index) { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= row.username %></td>
+          <td><%= row.score %></td>
+        </tr>
+      <% }); %>
+    </table>
+  </body>
+</html>
