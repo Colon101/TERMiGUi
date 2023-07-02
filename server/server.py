@@ -76,7 +76,6 @@ def handle_get():
               body {{
                 background-color: #222;
                 color: #fff;
-                font-size: 24px;
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 20px;
@@ -85,11 +84,12 @@ def handle_get():
               h1 {{
                 font-size: 36px;
                 text-align: center;
+                margin-bottom: 30px;
               }}
 
               p {{
                 text-align: center;
-                margin-bottom: 20px;
+                margin-bottom: 30px;
               }}
 
               a.button {{
@@ -109,7 +109,6 @@ def handle_get():
               table {{
                 border-collapse: collapse;
                 width: 100%;
-                margin-top: 20px;
               }}
 
               th,
@@ -155,8 +154,6 @@ def handle_get():
           </body>
         </html>
     '''
-
-
     cursor.close()
     conn.close()
 
