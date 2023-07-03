@@ -4,6 +4,12 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 50px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.light-theme {
+  background-color: #fff;
+  color: #000;
 }
 
 h1 {
@@ -17,7 +23,6 @@ p {
   margin-bottom: 30px;
 }
 
-/* Add the button-30 styles below */
 .button-30 {
   align-items: center;
   appearance: none;
@@ -63,7 +68,48 @@ p {
   transform: translateY(2px);
 }
 
-/* End of button-30 styles */
+/* Add the switch styles below */
+.theme-switch {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
+
+.toggle-checkbox {
+  display: none;
+}
+
+.toggle-label {
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background-color: #888;
+  border-radius: 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.toggle-label::before {
+  content: "";
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #00FFFF;
+}
+
+.toggle-checkbox:checked + .toggle-label::before {
+  transform: translateX(30px);
+}
+/* End of switch styles */
 
 table {
   border-collapse: collapse;
@@ -76,18 +122,23 @@ td {
   padding: 8px;
   text-align: center;
   font-size: 20px;
-  vertical-align: middle; /* Added this line */
+  vertical-align: middle;
 }
 
 th {
   background-color: #494949;
   color: #fff;
   font-weight: bold;
-  
 }
 
+.light-theme th {
+  background-color: #888888;
+}
 td {
   background-color: #222;
+}
+.light-theme td {
+  background-color: #fff;
 }
 
 @media screen and (max-width: 600px) {
