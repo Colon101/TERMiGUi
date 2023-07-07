@@ -1,42 +1,23 @@
-$username = $env:USERNAME
+# Restart computer if script encounters an error
 
-# Define the path to be added to the PATH variable
-$pythonPath = "C:\Users\$username\AppData\Local\Programs\Python\Python311\Scripts"
 
-$currentPath = [Environment]::GetEnvironmentVariable("PATH", "User")
 
-if ($currentPath -notlike "*$pythonPath*") {
-    $newPath = $currentPath + ";" + $pythonPath
 
-    # Set the modified PATH variable
-    [Environment]::SetEnvironmentVariable("PATH", $newPath, "User")
-}
+# Install Python 3.11 using winget
+winget install Python.Python.3.11
+
+# Add Python Scripts folder to PATH
+
+
 
 # Install requirements.txt using pip
-"C:\Users\$username\AppData\Local\Programs\Python\Python311\Scripts\pip install -r requirements.txt"
+pip install -r requirements.txt
 
 # Build executable using pyinstaller
 $sourceFile = "TERMiGUi.py"
-$outputName = "output"
+$outputName = "code.exe"
 
-$pyinstallerPath = "C:\Users\$username\AppData\Local\Programs\Python\Python311\Scripts\pyinstaller"
-$cheerPath = "cheer.mp3"
-$wordsPath = "words.txt"
-$codeImagePath = "code.png"
-$apikeyPath = ".apikey.txt"
-$spellgamePath = "spellgame.txt"
-$waltuhPath = "Waltuh.mp3"
-
-# Check if .apikey.txt file exists
-if (Test-Path $apikeyPath) {
-    # File exists, add it as a data file in PyInstaller
-    $pyinstallerArgs = "--onefile --windowed --add-data '$cheerPath;.' --add-data '$wordsPath;.' --add-data '$codeImagePath;.' --add-data '$apikeyPath;.' --add-data '$spellgamePath;.' --add-data '$waltuhPath;.' --hidden-import pygame --hidden-import spellchecker --icon code.ico --name $outputName $sourceFile"
-} else {
-    # File doesn't exist, exclude it from PyInstaller
-    $pyinstallerArgs = "--onefile --windowed --add-data '$cheerPath;.' --add-data '$wordsPath;.' --add-data '$codeImagePath;.' --add-data '$spellgamePath;.' --add-data '$waltuhPath;.' --hidden-import pygame --hidden-import spellchecker --icon code.ico --name $outputName $sourceFile"
-}
-
-Invoke-Expression "$pyinstallerPath $pyinstallerArgs"
+pyinstaller --onefile --windowed --add-data "cheer.mp3;." --add-data "words.txt;." --add-data "code.png;." --add-data ".apikey.txt;." --add-data "spellgame.txt;." --add-data "Waltuh.mp3;." --hidden-import pygame  --hidden-import spellchecker --icon code.ico --name $outputName $sourceFile
 
 # Remove spec file
 Remove-Item -Path "$outputName.spec"
@@ -44,5 +25,6 @@ Remove-Item -Path "$outputName.spec"
 # Run the generated executable
 Start-Process -FilePath "dist\$outputName"
 
-Write-Host "If an error occurred, please try restarting."
+Write-Host "if an error occurred. Please try adding this enviorement variable and restart `nC:\Users\YOURSERNAME\AppData\Local\Programs\Python\Python311\Scripts."
+write-host "if you only have pip there then in file explorer`nC:\Users\Kfir\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_crpytic suff till you see a bunch of exe's"
 Read-Host -Prompt "Press ENTER to exit"
