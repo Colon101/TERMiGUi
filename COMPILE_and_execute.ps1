@@ -8,7 +8,7 @@ winget install Python.Python.3.11
 
 # Add Python Scripts folder to PATH
 
-
+Invoke-Expression "requirements.ps1"
 
 # Install requirements.txt using pip
 pip install -r requirements.txt
