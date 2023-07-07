@@ -1,5 +1,5 @@
 # Leaderboard
-Check out the [leaderboards](http://139.144.177.42/)
+Check out the [leaderboards](https://termigui.tavernxkobold.xyz)
 # TERMiGUi
 Welcome to my terrible software
 this is just a little program to make terminal based applications with a gui and allow a developer to have a nicer user interface to do simple tasks

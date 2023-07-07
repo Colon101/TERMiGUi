@@ -5,6 +5,7 @@ __pycache__/
 .apikey.txt
 # C extensions
 *.so
+server/leaderboard.db
 # Distribution / packaging
 .Python
 build/
