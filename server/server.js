@@ -18,6 +18,20 @@ db.run(`
 const cheerio = require('cheerio'); // Import the cheerio package
 
 app.use(express.json());
+app.get('/leaderboard', (req, res) => {
+    const offset = parseInt(req.query.offset) || 0; // Get offset from query parameters
+    const limit = 50; // Number of entries to load per request
+
+    db.all('SELECT username, score FROM scores ORDER BY score DESC LIMIT ?, ?', [offset, limit], (err, rows) => {
+        if (err) {
+            return res.status(500).send('Internal Server Error.');
+        }
+
+        const leaderboard = rows.map((row) => ({ username: row.username, score: row.score }));
+        res.json(leaderboard);
+    });
+});
+
 app.post('/', (req, res) => {
     const { username, score } = req.body;
 
@@ -58,35 +72,13 @@ app.post('/', (req, res) => {
     });
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Define a route to serve the index.html file on a GET request
 app.get('/', (req, res) => {
-    db.all('SELECT username, score FROM scores ORDER BY score DESC', (err, rows) => {
-      if (err) {
-        return res.status(500).send('Internal Server Error.');
-      }
-  
-      const leaderboard = rows.map((row) => ({ username: row.username, score: row.score }));
-  
-      // Render the index.ejs file and pass the leaderboard data
-      ejs.renderFile(path.join(__dirname, 'public', 'index.ejs'), { leaderboard }, (err, html) => {
-        if (err) {
-          return res.status(500).send('Internal Server Error.');
-        }
-  
-        const $ = cheerio.load(html); // Load the HTML string into cheerio
-  
-        // Get the metadata tag and update its content
-        const metadataTag = $('meta[name="description"]');
-        const leaderboardRankings = leaderboard
-          .slice(0, 5)
-          .map((row, index) => `${index + 1}. ${row.username}`)
-          .join('\n');
-        metadataTag.attr('content', `Leaderboard Rankings:\n${leaderboardRankings}`);
-  
-        res.send($.html()); // Send the modified HTML to the client
-      });
-    });
-  });
-  
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
   // Serve static files from the 'public' directory
   app.use(express.static(path.join(__dirname, 'public')));
   

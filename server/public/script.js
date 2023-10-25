@@ -1,7 +1,6 @@
 const toggleCheckbox = document.getElementById("toggle-theme");
 const body = document.body;
 
-// Function to set a cookie with a given name, value, and expiration date
 function setCookie(name, value, days) {
   const date = new Date();
   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -9,7 +8,6 @@ function setCookie(name, value, days) {
   document.cookie = name + "=" + value + ";" + expires + ";path=/";
 }
 
-// Function to get the value of a cookie with a given name
 function getCookie(name) {
   const cookieName = name + "=";
   const cookies = document.cookie.split(";");
@@ -25,7 +23,6 @@ function getCookie(name) {
   return "";
 }
 
-// Function to check if a cookie with a given name exists
 function cookieExists(name) {
   return document.cookie.split(";").some((cookie) => cookie.trim().startsWith(name + "="));
 }
@@ -33,14 +30,13 @@ function cookieExists(name) {
 toggleCheckbox.addEventListener("change", function() {
   if (toggleCheckbox.checked) {
     body.classList.add("light-theme");
-    setCookie("theme", "light", 365); // Set the "theme" cookie with a value of "light" that expires in 365 days
+    setCookie("theme", "light", 365);
   } else {
     body.classList.remove("light-theme");
-    setCookie("theme", "dark", 365); // Set the "theme" cookie with a value of "dark" that expires in 365 days
+    setCookie("theme", "dark", 365);
   }
 });
 
-// Check if the "theme" cookie exists and set the theme accordingly
 if (cookieExists("theme")) {
   const theme = getCookie("theme");
   if (theme === "light") {
@@ -48,3 +44,53 @@ if (cookieExists("theme")) {
     body.classList.add("light-theme");
   }
 }
+
+let loading = false;
+let offset = 0;
+
+function loadLeaderboard() {
+  if (loading) return;
+  loading = true;
+  const leaderboardContainer = document.getElementById('leaderboard-container');
+  const loadingSpinner = document.getElementById('loading-spinner');
+
+  loadingSpinner.style.display = 'block';
+
+  fetch(`/leaderboard?offset=${offset}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.length === 0) {
+        loadingSpinner.style.display = 'none';
+        return;
+      }
+
+      const table = leaderboardContainer.querySelector('table');
+      data.forEach((row, index) => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td>${offset + index + 1}</td>
+          <td>${row.username}</td>
+          <td>${row.score}</td>
+        `;
+        table.appendChild(newRow);
+      });
+
+      offset += data.length;
+      loading = false;
+      loadingSpinner.style.display = 'none';
+;
+    })
+    .catch((error) => {
+      console.error('Error loading leaderboard: ', error);
+      loading = false;
+      loadingSpinner.style.display = 'none';
+    });
+}
+
+loadLeaderboard();
+
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    loadLeaderboard();
+  }
+});
