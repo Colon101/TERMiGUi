@@ -11,6 +11,8 @@ import re
 from PIL import Image, ImageTk
 from io import BytesIO
 import requests
+import gtts
+import threading
 
 
 class TERMiGUi:
@@ -35,13 +37,15 @@ class TERMiGUi:
         raise Exception(
             file + " isn't a valid file path ending with .png or a valid URL")
 
+    def playTTS(self, message: str):
+        ...
+
     def _changeIcon(self, icon: str) -> None:
         isurl = self._isURL(icon)
         if isurl:
             response = requests.get(icon)
             img_data = response.content
             image = Image.open(BytesIO(img_data))
-            # Use ImageTk.PhotoImage instead of tkinter.PhotoImage
             photo = ImageTk.PhotoImage(image)
             self.__root.iconphoto(False, photo)
         else:
