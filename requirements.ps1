@@ -11,7 +11,8 @@ $packages = @(
     "mutagen",
     "sounddevice",
     "soundfile",
-    "pygame"
+    "pygame",
+    "numpy"
 )
 
 foreach ($package in $packages) {
