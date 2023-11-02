@@ -11,8 +11,9 @@ import re
 from PIL import Image, ImageTk
 from io import BytesIO
 import requests
-import gtts
-import threading
+from gtts import gTTS
+import os
+import tempfile
 
 
 class TERMiGUi:
@@ -37,8 +38,21 @@ class TERMiGUi:
         raise Exception(
             file + " isn't a valid file path ending with .png or a valid URL")
 
-    def playTTS(self, message: str):
-        ...
+    def playTTS(self, message: str, language: str = "en"):
+        tts = gTTS(text=message, lang=language)
+        temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+        temp_file.close()
+        tts.save(temp_file.name)
+
+        data, fs = sf.read(temp_file.name)
+        # Remove the temporary file after reading its content
+        os.remove(temp_file.name)
+
+        sd.play(data, fs)
+        while sd.get_stream().active:
+            time.sleep(1/144)
+            self.update()
+        sd.stop()
 
     def _changeIcon(self, icon: str) -> None:
         isurl = self._isURL(icon)
@@ -150,7 +164,7 @@ class TERMiGUi:
             hideagain.place(x=40, y=370)
 
         while self._waitForTIN == False:
-            self.__root.update()
+            self.update()
             time.sleep(1/144)
         self._waitForTIN = False
         thing = userInputEntry.get()
