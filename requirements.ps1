@@ -2,16 +2,9 @@
 $packages = @(
     "requests",
     "tk",
-    "logging",
-    "cryptography",
-    "bitlyshortener",
-    "pyspellchecker",
     "gtts",
-    "nltk",
-    "mutagen",
     "sounddevice",
-    "soundfile",
-    "pygame"
+    "soundfile"
 )
 
 foreach ($package in $packages) {
