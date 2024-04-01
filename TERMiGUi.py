@@ -1,5 +1,6 @@
+from asyncio import Event
 import tkinter
-from tkinter import messagebox
+from tkinter import Entry, messagebox
 import logging
 import sounddevice as sd
 import soundfile as sf
@@ -18,7 +19,7 @@ import tempfile
 
 class TERMiGUi:
     __isRunning: bool = False
-    _waitForTIN = False
+    _waitForTIN: bool = False
 
     def onClose(self):
         ...
@@ -43,7 +44,6 @@ class TERMiGUi:
         temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
         temp_file.close()
         tts.save(temp_file.name)
-
         data, fs = sf.read(temp_file.name)
         # Remove the temporary file after reading its content
         os.remove(temp_file.name)
@@ -144,12 +144,15 @@ class TERMiGUi:
     def input(self, message: str = "", hide: bool = False) -> str:
         def change_waitForTTN():
             self._waitForTIN = True
+
+        def handle_return(e):
+            change_waitForTTN()
         self.print(message, end="")
 
         userInputEntry = tkinter.Entry(
             self.__root, font=("Arial", 14), bg="#333", fg="#fff")
         userInputEntry.pack(pady=10)
-        userInputEntry.bind('<Return>', change_waitForTTN)
+        userInputEntry.bind('<Return>', handle_return)
         userInputEntry.focus_set()
         userInputButton = tkinter.Button(self.__root, text="Submit", command=change_waitForTTN, font=("Arial", 14), bg="#555",
                                          fg="#fff", activebackground="#555", activeforeground="#fff")
